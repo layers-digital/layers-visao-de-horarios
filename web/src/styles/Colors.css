@@ -1,0 +1,273 @@
+:root{
+  --grey-20: #EEF1F5;
+  --grey-30: #E8ECEF;
+  --grey-50: #C8D0D8;
+  --grey-60: #A3B1BF;
+  --link: #2F8AF5;
+  --white: #FFFFFF;
+  --purple: #5451D6;
+  --aqua: #00B8AD;
+}
+/*
+  grey-10 - Text color, border color and background color
+*/
+.grey-10 {
+  background-color: #F4F6F8!important;
+}
+.grey-10-outline {
+  border-color: #F4F6F8 !important;
+}
+.grey-10--text {
+  color: #F4F6F8 !important;
+}
+
+/*
+  grey-20 - Text color, border color and background color
+*/
+.grey-20 {
+  background-color: var(--grey-20)!important;
+}
+.grey-20-outline {
+  border-color: var(--grey-20)!important;
+}
+.grey-20--text {
+  color: var(--grey-20)!important;
+}
+
+/*
+  grey-30 - Text color, border color and background color
+*/
+.grey-30 {
+  background-color: var(--grey-30)!important;
+}
+.grey-30-outline {
+  border-color: var(--grey-30) !important;
+}
+.grey-30--text {
+  color: var(--grey-30) !important;
+}
+
+/*
+  grey-50 - Text color, border color and background color
+*/
+.grey-50 {
+  background-color: var(--grey-50)!important;
+}
+.grey-50-outline {
+  border-color: var(--grey-50) !important;
+}
+.grey-50--text {
+  color: var(--grey-50) !important;
+}
+
+/*
+  grey-60 - Text color, border color and background color
+*/
+.grey-60 {
+  background-color: #A3B1BF!important;
+}
+.grey-60-outline {
+  border-color: #A3B1BF !important;
+}
+.grey-60--text {
+  color: #A3B1BF !important;
+}
+
+/*
+  grey-70 - Text color, border color and background color
+*/
+.grey-70 {
+  background-color: #748494!important;
+}
+.grey-70-outline {
+  border-color: #748494 !important;
+}
+.grey-70--text {
+  color: #748494 !important;
+}
+
+/*
+  grey-70-light - Text color, border color and background color
+*/
+.grey-70-light {
+  background-color: #e8ecef!important;
+}
+.grey-70-light-outline {
+  border-color: #e8ecef !important;
+}
+.grey-70-light--text {
+  color: #e8ecef !important;
+}
+
+/*
+  grey-80 - Text color, border color and background color
+*/
+.grey-80 {
+  background-color: #405261!important;
+}
+.grey-80-outline {
+  border-color: #405261 !important;
+}
+.grey-80--text {
+  color: #405261 !important;
+}
+
+/*
+  danger - Text color, border color and background color
+*/
+.danger {
+  background-color: #ED6B4F!important;
+}
+.danger-outline {
+  border-color: #ED6B4F !important;
+}
+.danger--text {
+  color: #ED6B4F !important;
+}
+
+/*
+  danger-light - Text color, border color and background color
+*/
+.danger-light {
+  background-color: rgba(237, 107, 79, 0.1) !important;
+}
+.danger-light-outline {
+  border-color: rgba(237, 107, 79, 0.1) !important;
+}
+.danger-light--text {
+  color: rgba(237, 107, 79, 0.1) !important;
+}
+
+/*
+  warning - Text color, border color and background color
+*/
+.warning {
+  background-color: #F0AF09!important;
+}
+.warning-outline {
+  border-color: #F0AF09 !important;
+}
+.warning--text {
+  color: #F0AF09 !important;
+}
+
+/*
+  warning-light - Text color, border color and background color
+*/
+.warning-light {
+  background-color: rgba(240, 175, 9, 0.12) !important;
+}
+.warning-light-outline {
+  border-color: rgba(240, 175, 9, 0.12) !important;
+}
+.warning-light--text {
+  color: rgba(240, 175, 9, 0.12) !important;
+}
+
+/*
+  success - Text color, border color and background color
+*/
+.success {
+  background-color: #30B565 !important;
+}
+.success-outline {
+  border-color: #30B565 !important;
+}
+.success--text {
+  color: #30B565 !important;
+}
+
+/*
+  success-light - Text color, border color and background color
+*/
+.success-light {
+  background-color: rgba(48, 181, 101, 0.1) !important;
+}
+.success-light-outline {
+  border-color: rgba(48, 181, 101, 0.1) !important;
+}
+.success-light--text {
+  color: rgba(48, 181, 101, 0.1) !important;
+}
+
+/*
+  link - Text color, border color and background color
+*/
+.link {
+  background-color: var(--link) !important;
+}
+.link-outline {
+  border-color: var(--link) !important;
+}
+.link--text {
+  color: var(--link) !important;
+}
+
+/*
+  lead - Text color, border color and background color
+*/
+.lead {
+  background-color: #232B34 !important;
+}
+.lead-outline {
+  border-color: #232B34 !important;
+}
+.lead--text {
+  color: #232B34 !important;
+}
+
+/*
+  lead-light - Text color, border color and background color
+*/
+.lead-light {
+  background-color: #434E5B !important;
+}
+.lead-light-outline {
+  border-color: #434E5B !important;
+}
+.lead-light--text {
+  color: #434E5B !important;
+}
+
+
+/*
+  white - Text color, border color and background color
+*/
+.white {
+  background-color: var(--white) !important;
+}
+.white-outline {
+  border-color: var(--white) !important;
+}
+.white--text {
+  color: var(--white) !important;
+}
+
+/*
+  purple - Text color, border color and background color
+*/
+.purple {
+  background-color: var(--purple) !important;
+}
+.purple-outline {
+  border-color: var(--purple) !important;
+}
+.purple--text {
+  color: var(--purple) !important;
+}
+
+
+/*
+  aqua - Text color, border color and background color
+*/
+.aqua {
+  background-color: var(--aqua) !important;
+}
+.aqua-outline {
+  border-color: var(--aqua) !important;
+}
+.aqua--text {
+  color: var(--aqua) !important;
+}
+
+

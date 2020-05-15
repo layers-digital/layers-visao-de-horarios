@@ -1,0 +1,53 @@
+.app-icon-radius {
+  border-radius: 22.5%;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.card {
+  box-shadow: 0 0 0 1px var(--grey-30);
+  border-radius: 12px;
+  background-color: white;
+}
+
+.card.danger-state {
+  box-shadow: 0 0 0 1px var(--danger-light);
+}
+
+.card.warnings-state {
+  box-shadow: 0 0 0 1px var(--warning-light);
+}
+
+.card.success-state {
+  box-shadow: 0 0 0 1px var(--success-light);
+}
+
+.card.neutral-state {
+  box-shadow: 0 0 0 1px var(--grey-30);
+}
+
+@keyframes placeHolderShimmer {
+  0%{ background-position: 50% 0; }
+  100%{ background-position: -50% 0; }
+}
+
+.loading-placeholder {
+  animation-duration: 2.3s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-name: placeHolderShimmer;
+  background: #f6f7f8;
+  background: linear-gradient(to right, #ffffff2e 8%, #ffffff52 18%, #ffffff2e 33%);
+  background-size: 800px 104px;
+  height: 96px;
+  position: relative;
+}
+
+.placeholder {
+  height: 16px;
+  width: 100%;
+  background-color: var(--grey-50);
+}
