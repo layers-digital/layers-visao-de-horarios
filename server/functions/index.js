@@ -41,14 +41,164 @@ let mockedData = [
           "abbr": "PORT",
 
           // Etiqueta do horário (opcional)
+          "label": "Grad",
+
+          // Dia da semana em que o horário é vigente (obrigatório)
+          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
+          "weekday": "tuesday",
+
+          // Horário de início (obrigatório)
+          "startTime": "21:00:00", // ISO 8601 (obrigatório)
+
+          // Horário de fim (opcional)
+          "endTime": "16:30:00", // Formato de HH:ISO 8601
+
+          // Localização do horário (opcional)
+          "location": "Campus SP, sala 12, bloco B",
+
+          // Subtítulo do horário (opcional)
+          "caption": "Prof(a): Ana Maria",
+        },{
+          // Título do horário (atividade, disciplina) (obrigatório)
+          "title": "Física e os estudos",
+
+          // Abreviação do titulo (opcional)
+          "abbr": "FIS",
+
+          // Etiqueta do horário (opcional)
           "label": "Extracurricular",
 
           // Dia da semana em que o horário é vigente (obrigatório)
           // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "monday",
+          "weekday": "tuesday",
 
           // Horário de início (obrigatório)
-          "startTime": "15:30:00", // ISO 8601 (obrigatório)
+          "startTime": "03:00", // ISO 8601 (obrigatório)
+
+          // Horário de fim (opcional)
+          "endTime": "16:30:00", // Formato de HH:ISO 8601
+
+          // Localização do horário (opcional)
+          "location": "Campus SP, sala 12, bloco B",
+
+          // Subtítulo do horário (opcional)
+          "caption": "Prof(a): Ana Maria",
+        }, {
+          // Título do horário (atividade, disciplina) (obrigatório)
+          "title": "Matemática e os estudos",
+
+          // Abreviação do titulo (opcional)
+          "abbr": "MAT",
+
+          // Etiqueta do horário (opcional)
+          "label": "Extracurricular",
+
+          // Dia da semana em que o horário é vigente (obrigatório)
+          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
+          "weekday": "tuesday",
+
+          // Horário de início (obrigatório)
+          "startTime": "03:01", // ISO 8601 (obrigatório)
+
+          // Horário de fim (opcional)
+          "endTime": "16:30:00", // Formato de HH:ISO 8601
+
+          // Localização do horário (opcional)
+          "location": "Campus SP, sala 12, bloco B",
+
+          // Subtítulo do horário (opcional)
+          "caption": "Prof(a): Ana Maria",
+        }, {
+          // Título do horário (atividade, disciplina) (obrigatório)
+          "title": "Geografia e os estudos",
+
+          // Abreviação do titulo (opcional)
+          "abbr": "GEO",
+
+          // Etiqueta do horário (opcional)
+          "label": "Extracurricular",
+
+          // Dia da semana em que o horário é vigente (obrigatório)
+          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
+          "weekday": "tuesday",
+
+          // Horário de início (obrigatório)
+          "startTime": Date.now(), // ISO 8601 (obrigatório)
+
+          // Horário de fim (opcional)
+          "endTime": "16:30:00", // Formato de HH:ISO 8601
+
+          // Localização do horário (opcional)
+          "location": "Campus SP, sala 12, bloco B",
+
+          // Subtítulo do horário (opcional)
+          "caption": "Prof(a): Ana Maria",
+        }, {
+          // Título do horário (atividade, disciplina) (obrigatório)
+          "title": "História e os estudos",
+
+          // Abreviação do titulo (opcional)
+          "abbr": "HIS",
+
+          // Etiqueta do horário (opcional)
+          "label": "Extracurricular",
+
+          // Dia da semana em que o horário é vigente (obrigatório)
+          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
+          "weekday": "tuesday",
+
+          // Horário de início (obrigatório)
+          "startTime": new Date(), // ISO 8601 (obrigatório)
+
+          // Horário de fim (opcional)
+          "endTime": "16:30:00", // Formato de HH:ISO 8601
+
+          // Localização do horário (opcional)
+          "location": "Campus SP, sala 12, bloco B",
+
+          // Subtítulo do horário (opcional)
+          "caption": "Prof(a): Ana Maria",
+        }, {
+          // Título do horário (atividade, disciplina) (obrigatório)
+          "title": "Biologia e os estudos",
+
+          // Abreviação do titulo (opcional)
+          "abbr": "BIO",
+
+          // Etiqueta do horário (opcional)
+          "label": "Extracurricular",
+
+          // Dia da semana em que o horário é vigente (obrigatório)
+          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
+          "weekday": "tuesday",
+
+          // Horário de início (obrigatório)
+          "startTime": "23:00", // ISO 8601 (obrigatório)
+
+          // Horário de fim (opcional)
+          "endTime": "16:30:00", // Formato de HH:ISO 8601
+
+          // Localização do horário (opcional)
+          "location": "Campus SP, sala 12, bloco B",
+
+          // Subtítulo do horário (opcional)
+          "caption": "Prof(a): Ana Maria",
+        }, {
+          // Título do horário (atividade, disciplina) (obrigatório)
+          "title": "Filosofia e os estudos",
+
+          // Abreviação do titulo (opcional)
+          "abbr": "FIL",
+
+          // Etiqueta do horário (opcional)
+          "label": "Extracurricular",
+
+          // Dia da semana em que o horário é vigente (obrigatório)
+          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
+          "weekday": "friday",
+
+          // Horário de início (obrigatório)
+          "startTime": "15:0022", // ISO 8601 (obrigatório)
 
           // Horário de fim (opcional)
           "endTime": "16:30:00", // Formato de HH:ISO 8601

@@ -27,7 +27,7 @@ export default {
   },
 
   computed: {
-    ...mapState('gradebooks', ['lastFetch']),
+    ...mapState('timetables', ['lastFetch']),
 
     lastFetchLabel() {
       return formatRelativeDate(this.lastFetch)

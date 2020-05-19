@@ -13,24 +13,65 @@
         <img src="@/assets/arrow-down.svg" v-else-if='!expanded && showExpansionContent' />
       </div>
     </div>
-    <TransitionExpand>
-      <div 
-        class="expansion-content mx-3" 
-        v-if="expanded && showExpansionContent">
-        {{ timetable }}
-      </div>
 
-      <div 
-        class="grey-70--text mx-3 mb-2" 
-        v-else-if='!showExpansionContent'>
-        Não há horários hoje
+    <div 
+      class="purple--text bold mx-3" 
+      v-if='showExpansionContent'>
+      {{ schedulesTotal }}
+    </div>
+    <div
+      class="grey-70--text mx-3 mb-2" 
+      v-else>
+      Não há horários hoje
+    </div>
+
+    <TransitionExpand v-show="expanded && showExpansionContent">
+      <div class="pb-2 mt-3">
+        <template v-for="(schedule, i) in schedulesHydrated">
+          <div class="schedule-interval mx-3" v-if="schedule == 'interval'" :key="i">
+            <div class="interval-dot"><img src="@/assets/dots.svg" width="18" height="24" /></div>
+          </div>
+          <div class="schedule ls-d-flex ls-align-items-center mx-3 mb-2" :key="i" v-else-if="schedule">
+            <img 
+              src="@/assets/marker.svg" 
+              width="11"
+              height="14"
+              class="marker"
+              v-if="scheduleStatus(schedule.startTime) == 'now'"
+            />
+
+            <!-- Schedule - Start time -->
+            <Chip 
+              class="mr-3" 
+              :color="scheduleColor(scheduleStatus(schedule.startTime)) + '--text'"
+              :label="schedule.formattedStartTime" 
+              v-if="schedule.startTime" 
+            />
+
+            <!-- Schedule - Label -->
+            <Chip 
+              class="mr-2 schedule-label" 
+              :label="schedule.label" 
+              color="link--text" 
+              v-if="schedule.label" 
+            />
+
+            <!-- Schedule - Title -->
+            <div 
+              class="ls-flex-grow-1 ls-flex-shrink-1 ellipsis-1" 
+              :class="(scheduleStatus(schedule.startTime) == 'now' ? 'bold ' : '') + scheduleColor(scheduleStatus(schedule.startTime)) + '--text'"
+              v-if="schedule.title">
+              {{ schedule.title }}
+            </div>
+          </div>
+        </template>
       </div>
     </TransitionExpand>
-    <div class="mx-3 mb-3">
+
+    <div class="m-3">
       <Button 
         @click.native="$emit('openTimetable')"
         label="Ver todos os horários"
-        class="mt-2"
       />
     </div>
   </div>
@@ -38,16 +79,25 @@
 
 <script type="text/javascript">
 import TransitionExpand from '@/components/TransitionExpand'
-import Chip from '@/components/Chip'
+import getCurrentWeekday from '@/helpers/getCurrentWeekday'
+import formatTime from '@/helpers/formatTime'
 import Button from '@/components/Button'
+import Chip from '@/components/Chip'
+import { mapState } from 'vuex'
 import _ from 'lodash'
-import parseDate from '@/helpers/parseDate'
 
 export default {
   name: "OverviewTimetableCard",
 
+  data() {
+    return {
+      TWENTY_MINUTES: 1000 * 60 * 20
+    }
+  },
+
   components: {
     Button,
+    Chip,
     TransitionExpand,
   },
 
@@ -63,25 +113,73 @@ export default {
     }
   },
 
-  data() {
-    return {
-
-    }
-  },
-
   computed: {
+    ...mapState('timetables', ['weekdays']),
+
+    schedulesHydrated() {
+      if(!this.timetable || !this.timetable.schedules || !this.timetable.schedules.length) return []
+
+      let schedules = this.timetable.schedules
+        .filter(s => s.weekday == getCurrentWeekday(this.weekdays))
+        .map(s => ({ ...s, formattedStartTime: formatTime(s.startTime) }))
+
+      schedules = _.sortBy(schedules, 'formattedStartTime')
+
+      let countIntervals = 0
+      let schedulesWithIntervals = [...schedules]
+
+      // Create intervals
+      schedules.forEach((s, i) => {
+        if(i == 0 && s != 'interval') return
+        let diff = this.convertTimeToDate(s.startTime) - this.convertTimeToDate(schedules[i - 1].startTime)
+
+        // Create an interval if the diff between schedules if greater than twenty minutes
+        if(diff > this.TWENTY_MINUTES) {
+          schedulesWithIntervals.splice(i + countIntervals, 0, 'interval')
+          countIntervals++
+        }
+      })
+      return schedulesWithIntervals
+    },
+ 
+    schedulesTotal() {
+      if(!this.timetable || !this.timetable.schedules || !this.timetable.schedules.length) return ''
+
+      let schedules = this.timetable.schedules.length
+      return schedules == 1 ? '1 horário hoje' : schedules + ' horários hoje'
+    },
+
     hasSchedulesToday() {
-      return false
+      if(!this.timetable || !this.timetable.schedules || !this.timetable.schedules.length) return false
+      return this.timetable.schedules.find((t) => t.weekday == getCurrentWeekday(this.weekdays))
     },
 
     showExpansionContent() {
       return _.get(this.timetable, 'schedules.length', null) && this.hasSchedulesToday
-    }
+    },
   },
 
   methods: {
+    convertTimeToDate(time) {
+      let date = new Date()
+      date.setHours(formatTime(time).split(':')[0])
+      date.setMinutes(formatTime(time).split(':')[1])
+      date.setSeconds(0)
+      date.setMilliseconds(0)
+      return date
+    },
 
+    scheduleColor(status) {
+      return {
+        'past': 'grey-50',
+        'now': 'aqua',
+        'future': 'lead',
+      }[status] || 'lead'
+    },
 
+    scheduleStatus(time) {
+      return 'future'
+    }
   }
 }
 </script>
@@ -95,5 +193,25 @@ export default {
 }
 .expansion-header {
   height: 72px;
+}
+.schedule-interval {
+  height: 24px;
+  margin-top: -0.5rem;
+}
+.interval-dot {
+  width: 48px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+}
+.schedule-label {
+  max-width: 58px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: none;
+}
+.marker {
+  margin-left: -18px;
+  margin-right: 6px;
 }
 </style>

@@ -36,17 +36,15 @@
           />
         </div>
       </div>
-      <div class="ls-d-flex terms" v-if="isShowTermOptions">
-<!--         <TermButton 
-          v-for="(term, i) in selectedTimetable.terms"
-          :icon="i === selectedTerm ? 'location' : ''"
-          :key="term.label"
-          :label="term.label"
-          :selected="i == selectedTerm"
+      <div class="ls-d-flex weekdays" v-if="isShowWeekdays">
+        <WeekdayButton 
+          v-for="weekday in weekdays"
+          :key="weekday"
+          :label="weekdayLabel(weekday)"
+          :selected="weekday == selectedWeekday"
           class="mr-2"
-          :id="'term-'+i"
-          @click.native="$store.commit('timetables/setSelectedTerm', i); $store.commit('timetables/setSubjectExpandableIndex', null)"
-        /> -->
+          @click.native="$store.commit('timetables/setSelectedWeekday', weekday)"
+        />
       </div>
       <TransitionExpand>
         <div v-if="expanded">
@@ -77,13 +75,13 @@
 </template>
 
 <script>
-import TransitionExpand from './TransitionExpand'
-import Chip from './Chip'
-import TermButton from './TermButton'
-import Loader from './Loader'
+import getCurrentWeekday from '@/helpers/getCurrentWeekday'
+import TransitionExpand from '@/components/TransitionExpand'
+import WeekdayButton from '@/components/WeekdayButton'
+import Loader from '@/components/Loader'
+import Chip from '@/components/Chip'
 import { mapState } from 'vuex'
 import _ from 'lodash'
-import getCurrentWeekdayIndex from '@/helpers/getCurrentWeekdayIndex'
 
 const OVERVIEW_PAGE = {
   id: 'overview',
@@ -100,7 +98,7 @@ export default {
     TransitionExpand,
     Chip,
     Loader,
-    // TermButton,
+    WeekdayButton,
   },
 
   data() {
@@ -121,7 +119,7 @@ export default {
   },
 
   computed: {
-    ...mapState('timetables', ['timetables', 'loading', 'selectedTimetable', 'selectedTerm']),
+    ...mapState('timetables', ['timetables', 'loading', 'weekdays', 'selectedTimetable', 'selectedWeekday']),
 
     links() {
       let links = this.timetables.map((timetable) => {
@@ -149,8 +147,8 @@ export default {
       return links
     },
 
-    isShowTermOptions() {
-      return !this.expanded && this.currentPage.id != 'overview' && (_.get(this.selectedTimetable, 'terms.length', 0) || _.get(this.selectedTimetable, 'attachments.length', 0))
+    isShowWeekdays() {
+      return !this.expanded && this.currentPage.id != 'overview' && _.get(this.weekdays, 'length', 0)
     }
   },
 
@@ -159,7 +157,7 @@ export default {
       if(route.name == 'overview') {
         this.currentPage = OVERVIEW_PAGE
         this.$store.commit('timetables/setSelectedTimetable', null)
-        this.$store.commit('timetables/setSelectedTerm', null)
+        this.$store.commit('timetables/setSelectedWeekday', null)
         return
       }
 
@@ -175,13 +173,8 @@ export default {
         let timetable = _.get(targetLink, 'route.params.timetable', null) || _.get(route, 'params.timetable', null)
         this.$store.commit('timetables/setSelectedTimetable', timetable)
 
-        let termIndex = getCurrentWeekdayIndex()
-
-        setTimeout(() => {
-          let term = document.getElementById("term-" + termIndex)
-          if (term) term.scrollIntoView()
-        }, 500)
-        this.$store.commit('timetables/setSelectedTerm', termIndex)
+        let weekday = getCurrentWeekday(this.weekdays)
+        this.$store.commit('timetables/setSelectedWeekday', weekday)
       }
     },
 
@@ -198,6 +191,18 @@ export default {
       if(this.expanded && _.get(this.currentPage, 'route.name', '') != 'overview') {
         this.$router.push({ name: 'overview' })
       }
+    },
+
+    weekdayLabel(weekday) {
+      return {
+        'sunday': 'Dom',
+        'monday': 'Seg',
+        'tuesday': 'Ter',
+        'wednesday': 'Qua',
+        'thursday': 'Qui',
+        'friday': 'Sex',
+        'saturday': 'Sáb',
+      }[weekday] || '-'
     }
   }
 }
@@ -241,12 +246,12 @@ export default {
   font-weight: 600;
   text-decoration: none !important;
 }
-.terms {
+.weekdays {
   padding-left: 16px; 
   height: 48px; 
   overflow: auto;
 }
-.terms::after {
+.weekdays::after {
   content: "";
   padding-right: 16px;
 }

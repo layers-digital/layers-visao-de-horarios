@@ -1,7 +1,7 @@
 <template>
   <span 
-    class="chip"  
-    :class="`${colors}-light ${colors}--text`">
+    class="chip bold"  
+    :class="`${background}-light ${color}`">
     {{label}}
     <slot></slot>
   </span>
@@ -12,9 +12,13 @@ export default {
   name: 'Chip',
   
   props: {
-    color: {
+    backgroundColor: {
       type: String,
       default: 'neutral'
+    },
+    color: {
+      type: String,
+      default: 'lead--text'
     },
     label: {
       type: String
@@ -22,13 +26,10 @@ export default {
   },
 
   computed: {
-    colors() {
+    background() {
       return {
-        'red': 'danger',
         'neutral': 'grey-70',
-        'yellow': 'warning',
-        'green': 'success',
-      } [this.color] || this.color
+      } [this.backgroundColor] || this.backgroundColor
     },
   }
 }

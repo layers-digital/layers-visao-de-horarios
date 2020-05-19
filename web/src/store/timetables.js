@@ -1,12 +1,15 @@
 import Axios from 'axios'
 import errorHandler from '@/helpers/errorHandler'
+import _ from 'lodash'
 
 const state = {
   loading: false,
   timetables: [],
+  weekdays: ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
+
   lastFetch: null,
   selectedTimetable: null,
-  selectedTerm: null,
+  selectedWeekday: null,
 
   timetableExpandableIndex: null,
 }
@@ -22,10 +25,24 @@ const mutations = {
 
   setSelectedTimetable(state, timetable) {
     state.selectedTimetable = timetable
+
+    if(!timetable || !timetable.schedules || !timetable.schedules.length) {
+      state.weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+      return
+    }
+    const weekdays = _(timetable.schedules).groupBy('weekday').keys().value()
+    let defaultWeekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+
+    console.log(weekdays)
+    // 
+    if(weekdays.find('sunday')) {
+
+    }
+    state.weekdays = ''
   },
 
-  setSelectedTerm(state, index) {
-    state.selectedTerm = index
+  setSelectedWeekday(state, index) {
+    state.selectedWeekday = index
   },
 
   setLastFetch(state, lastFetch) {

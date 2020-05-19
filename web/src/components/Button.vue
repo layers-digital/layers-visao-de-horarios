@@ -28,6 +28,7 @@ export default {
   background-color: #fff;
   outline: none;
   transition: background 0.3s ease-in-out;
+  padding: 0px;
 }
 .ls-button:active {
   background-color: #D7DEE3;
