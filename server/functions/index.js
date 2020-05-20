@@ -45,7 +45,7 @@ let mockedData = [
 
           // Dia da semana em que o horário é vigente (obrigatório)
           // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "tuesday",
+          "weekday": "wednesday",
 
           // Horário de início (obrigatório)
           "startTime": "21:00:00", // ISO 8601 (obrigatório)
@@ -70,7 +70,7 @@ let mockedData = [
 
           // Dia da semana em que o horário é vigente (obrigatório)
           // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "tuesday",
+          "weekday": "wednesday",
 
           // Horário de início (obrigatório)
           "startTime": "03:00", // ISO 8601 (obrigatório)
@@ -95,7 +95,7 @@ let mockedData = [
 
           // Dia da semana em que o horário é vigente (obrigatório)
           // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "tuesday",
+          "weekday": "wednesday",
 
           // Horário de início (obrigatório)
           "startTime": "03:01", // ISO 8601 (obrigatório)
@@ -115,12 +115,9 @@ let mockedData = [
           // Abreviação do titulo (opcional)
           "abbr": "GEO",
 
-          // Etiqueta do horário (opcional)
-          "label": "Extracurricular",
-
           // Dia da semana em que o horário é vigente (obrigatório)
           // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "tuesday",
+          "weekday": "wednesday",
 
           // Horário de início (obrigatório)
           "startTime": Date.now(), // ISO 8601 (obrigatório)
@@ -145,7 +142,7 @@ let mockedData = [
 
           // Dia da semana em que o horário é vigente (obrigatório)
           // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "tuesday",
+          "weekday": "wednesday",
 
           // Horário de início (obrigatório)
           "startTime": new Date(), // ISO 8601 (obrigatório)
@@ -170,7 +167,7 @@ let mockedData = [
 
           // Dia da semana em que o horário é vigente (obrigatório)
           // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "tuesday",
+          "weekday": "wednesday",
 
           // Horário de início (obrigatório)
           "startTime": "23:00", // ISO 8601 (obrigatório)
@@ -219,7 +216,7 @@ let mockedData = [
         "season": "2019",
 
         // Nome do estudante (obrigatório)
-        "student": "Ivan Seidel Gomes",
+        "student": "Ivan Seidel Gomes Nome muito grande Seidel Gomes Nome Seidel Gomes Nome ",
 
         // Nome do curso/série (opcional)
         "course": "9º Ano",
@@ -242,6 +239,50 @@ let mockedData = [
             // Dia da semana em que o horário é vigente (obrigatório)
             // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
             "weekday": "monday",
+
+            // Horário de início (obrigatório)
+            "startTime": "15:30:00", // ISO 8601 (obrigatório)
+
+            // Horário de fim (opcional)
+            "endTime": "16:30:00", // Formato de HH:ISO 8601
+
+            // Localização do horário (opcional)
+            "location": "Campus SP, sala 12, bloco B",
+
+            // Subtítulo do horário (opcional)
+            "caption": "Prof(a): Ana Maria",
+        }],
+      }, {
+        // ID interno da grade horária (opcional)
+        "id": "0003",
+
+        // Ano letivo (opcional)
+        "season": "2020",
+
+        // Nome do estudante (obrigatório)
+        "student": "João Carlos José",
+
+        // Nome do curso/série (opcional)
+        "course": "Ensino Fundamental - 9º ano",
+
+        // Dia em que começa a semana (opcional)
+        // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
+        "startWeekday": "wednesday", // default: "sunday"
+
+        // Lista de horários
+        "schedules": [{
+            // Título do horário (atividade, disciplina) (obrigatório)
+            "title": "Língua Portuguesa e os estudos",
+
+            // Abreviação do titulo (opcional)
+            "abbr": "PORT",
+
+            // Etiqueta do horário (opcional)
+            "label": "Extracurricular",
+
+            // Dia da semana em que o horário é vigente (obrigatório)
+            // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
+            "weekday": "wednesday",
 
             // Horário de início (obrigatório)
             "startTime": "15:30:00", // ISO 8601 (obrigatório)

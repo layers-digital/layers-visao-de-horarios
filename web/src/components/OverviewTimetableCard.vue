@@ -16,7 +16,7 @@
 
     <div 
       class="purple--text bold mx-3" 
-      v-if='showExpansionContent'>
+      v-if="showExpansionContent">
       {{ schedulesTotal }}
     </div>
     <div
@@ -52,7 +52,8 @@
             <Chip 
               class="mr-2 schedule-label" 
               :label="schedule.label" 
-              color="link--text" 
+              color="link--text"
+              backgroundColor="link-light"
               v-if="schedule.label" 
             />
 
@@ -126,12 +127,12 @@ export default {
       schedules = _.sortBy(schedules, 'formattedStartTime')
 
       let countIntervals = 0
-      let schedulesWithIntervals = [...schedules]
+      const schedulesWithIntervals = [...schedules]
 
       // Create intervals
       schedules.forEach((s, i) => {
         if(i == 0 && s != 'interval') return
-        let diff = this.convertTimeToDate(s.startTime) - this.convertTimeToDate(schedules[i - 1].startTime)
+        const diff = this.convertTimeToDate(s.startTime) - this.convertTimeToDate(schedules[i - 1].startTime)
 
         // Create an interval if the diff between schedules if greater than twenty minutes
         if(diff > this.TWENTY_MINUTES) {
@@ -145,7 +146,7 @@ export default {
     schedulesTotal() {
       if(!this.timetable || !this.timetable.schedules || !this.timetable.schedules.length) return ''
 
-      let schedules = this.timetable.schedules.length
+      const schedules = this.timetable.schedules.length
       return schedules == 1 ? '1 horário hoje' : schedules + ' horários hoje'
     },
 

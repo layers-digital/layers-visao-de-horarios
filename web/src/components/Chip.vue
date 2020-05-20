@@ -1,7 +1,7 @@
 <template>
   <span 
     class="chip bold"  
-    :class="`${background}-light ${color}`">
+    :class="`${backgroundColor} ${color}`">
     {{label}}
     <slot></slot>
   </span>
@@ -14,7 +14,7 @@ export default {
   props: {
     backgroundColor: {
       type: String,
-      default: 'neutral'
+      default: 'grey-70-light'
     },
     color: {
       type: String,
@@ -25,13 +25,6 @@ export default {
     }, 
   },
 
-  computed: {
-    background() {
-      return {
-        'neutral': 'grey-70',
-      } [this.backgroundColor] || this.backgroundColor
-    },
-  }
 }
 </script>
 

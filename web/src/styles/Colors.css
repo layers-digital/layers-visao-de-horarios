@@ -4,6 +4,7 @@
   --grey-50: #C8D0D8;
   --grey-60: #A3B1BF;
   --link: #2F8AF5;
+  --link-light: rgba(47, 138, 245, 0.12);
   --white: #FFFFFF;
   --purple: #5451D6;
   --aqua: #00B8AD;
@@ -201,6 +202,19 @@
 }
 .link--text {
   color: var(--link) !important;
+}
+
+/*
+  link light - Text color, border color and background color
+*/
+.link-light {
+  background-color: var(--link-light) !important;
+}
+.link-light-outline {
+  border-color: var(--link-light) !important;
+}
+.link-light--text {
+  color: var(--link-light) !important;
 }
 
 /*

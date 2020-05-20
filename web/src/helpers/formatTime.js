@@ -24,10 +24,10 @@ export default function formatTime(time) {
     // not a date
 
     // transform in date
-    const transformInDate = new Date(time)
-    if(transformInDate instanceof Date && !isNaN(transformInDate)){
-      const hours = (transformInDate.getHours() < 10 ? '0' : '') + transformInDate.getHours()
-      const minutes = (transformInDate.getMinutes() < 10 ? '0' : '') + transformInDate.getMinutes()
+    const timeTransformedInDate = new Date(time)
+    if(timeTransformedInDate instanceof Date && !isNaN(timeTransformedInDate)){
+      const hours = (timeTransformedInDate.getHours() < 10 ? '0' : '') + timeTransformedInDate.getHours()
+      const minutes = (timeTransformedInDate.getMinutes() < 10 ? '0' : '') + timeTransformedInDate.getMinutes()
       return hours + ':' + minutes
     }
 

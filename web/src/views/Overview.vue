@@ -1,8 +1,8 @@
 <template>
-  <div class="ls-container p-3 grey-10" style="min-height: 100vh; overflow: auto !important;">
+  <div class="page ls-container p-3 grey-10 ls-d-flex ls-flex-column ls-align-items-center">
     <template v-if="timetables && timetables.length">
-      <div class="lead-light--text mb-3" style="font-size: 16px; height: 16px;"> 
-        Hoje, <b class="current-weekday aqua--text">{{ currentWeekday }}</b>
+      <div class="lead-light--text mb-3 today"> 
+        Hoje, <b class="aqua--text">{{ currentWeekdayLabel }}</b>
       </div>
       <OverviewTimetableCard
         v-for="(timetable, i) in timetables"
@@ -14,6 +14,19 @@
         @expand="expand(i, $event)"
       />
     </template>
+    <template v-else-if="!loading">
+      <span class="no-timetables-title bold mb-2 lead--text text-center">
+        Não há informações disponíveis :(
+      </span>
+      <span class="lead-light--text text-center">
+        Entre em contato com sua instituição de <br />
+        ensino ou atualize a página
+      </span>
+      <div class="ls-flex-grow-1 ls-flex-shrink-1"></div>
+      <div class="no-timetables-image">
+        <img src="@/assets/empty-timetables.svg" width="268" height="208" />
+      </div>
+    </template>
     <template v-else>
       <Skeleton v-for="index in 6" :key="index" class="mb-3" style="opacity: 0.7;" />
     </template>
@@ -21,7 +34,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import Skeleton from '@/components/Skeleton'
 import OverviewTimetableCard from '@/components/OverviewTimetableCard'
 import _ from 'lodash'
@@ -42,26 +55,15 @@ export default {
     timetables(val) {
       if(val.length <= 2) {
         this.$store.commit('timetables/setTimetableExpandableIndex', [0, 1])
+        return
       }
+      this.$store.commit('timetables/setTimetableExpandableIndex', null)
     }
   },
 
   computed: {
     ...mapState('timetables', ['timetables', 'loading', 'timetableExpandableIndex']),
-
-    currentWeekday() {
-      let today = new Date();
-      let weekday = new Array(7);
-      weekday[0] = 'Domingo'
-      weekday[1] = 'Segunda-feira'
-      weekday[2] = 'Terça-feira'
-      weekday[3] = 'Quarta-feira'
-      weekday[4] = 'Quinta-feira'
-      weekday[5] = 'Sexta-feira'
-      weekday[6] = 'Sábado'
-
-      return weekday[today.getDay()];
-    }
+    ...mapGetters('timetables', ['currentWeekdayLabel']),
   },
 
   methods: {
@@ -93,5 +95,26 @@ export default {
 </script>
 
 <style scoped>
-
+.page {
+  min-height: 100vh; 
+  overflow: auto !important;
+}
+.today {
+  font-size: 16px; 
+  height: 16px;
+  text-align: left;
+  width: 100%;
+}
+.no-timetables-title {
+  font-size: 16px;
+  margin-top: 72px;
+}
+.no-timetables-image {
+  background-image: url('../assets/shape.svg');
+  width: 100%;
+  background-repeat: no-repeat;
+  text-align: center;
+  background-position: center;
+  margin-bottom: -16px;
+}
 </style>

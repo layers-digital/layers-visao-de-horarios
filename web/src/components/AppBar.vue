@@ -42,7 +42,6 @@
           :key="weekday"
           :label="weekdayLabel(weekday)"
           :selected="weekday == selectedWeekday"
-          class="mr-2"
           @click.native="$store.commit('timetables/setSelectedWeekday', weekday)"
         />
       </div>
@@ -255,4 +254,11 @@ export default {
   content: "";
   padding-right: 16px;
 }
+.weekdays > .ls-weekday-button {
+  margin-right: 8px;
+}
+.weekdays > .ls-weekday-button:last-child {
+  margin-right: 0px;
+}
+
 </style>

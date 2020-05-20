@@ -1,11 +1,14 @@
 import Axios from 'axios'
 import errorHandler from '@/helpers/errorHandler'
+import formatDate from '@/helpers/formatDate'
 import _ from 'lodash'
+
+const ALL_WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
 const state = {
   loading: false,
   timetables: [],
-  weekdays: ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
+  weekdays: ALL_WEEKDAYS,
 
   lastFetch: null,
   selectedTimetable: null,
@@ -27,18 +30,11 @@ const mutations = {
     state.selectedTimetable = timetable
 
     if(!timetable || !timetable.schedules || !timetable.schedules.length) {
-      state.weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+      state.weekdays = ALL_WEEKDAYS
       return
     }
-    const weekdays = _(timetable.schedules).groupBy('weekday').keys().value()
-    let defaultWeekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
 
-    console.log(weekdays)
-    // 
-    if(weekdays.find('sunday')) {
-
-    }
-    state.weekdays = ''
+    // TODO
   },
 
   setSelectedWeekday(state, index) {
@@ -83,7 +79,53 @@ const actions = {
 }
 
 const getters = {
+  currentWeekdayLabel: state => {
+    const date = new Date();
+    let weekday
+    const weekdays = {
+      'sunday': 'Domingo',
+      'monday': 'Segunda-feira',
+      'tuesday': 'Terça-feira',
+      'wednesday': 'Quarta-feira',
+      'thursday': 'Quinta-feira',
+      'friday': 'Sexta-feira',
+      'saturday': 'Sábado',
+    }
+    if(!state.selectedWeekday) {
+      weekday = weekdays[Object.keys(weekdays)[date.getDay()]]
+    } else if (state.selectedWeekday) {
+      weekday = weekdays[state.selectedWeekday]
+    }
 
+    return weekday;
+  },
+
+  currentSelectedDayLabel: state => {
+    if(!state.selectedWeekday) {
+      return ''
+    }
+
+    const dayOfWeek = {
+      'sunday': 0,
+      'monday': 1,
+      'tuesday': 2,
+      'wednesday': 3,
+      'thursday': 4,
+      'friday': 5,
+      'saturday': 6
+    }[state.selectedWeekday]
+  
+    const date = new Date()
+    const currentDay = date.getDay()
+    const distance = dayOfWeek - currentDay
+    date.setDate(date.getDate() + distance);
+    date.setHours(0)
+    date.setMinutes(0)
+    date.setSeconds(0)
+    date.setMilliseconds(0)
+
+    return formatDate(date);
+  }
 }
 
 export default {
