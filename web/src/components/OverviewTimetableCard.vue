@@ -37,13 +37,14 @@
               width="11"
               height="14"
               class="marker"
-              v-if="scheduleStatus(schedule.startTime) == 'now'"
+              v-if="schedule.status == 'now'"
             />
 
             <!-- Schedule - Start time -->
             <Chip 
               class="mr-3" 
-              :color="scheduleColor(scheduleStatus(schedule.startTime)) + '--text'"
+              :color="scheduleChipColor(schedule.status) + '--text'"
+              :backgroundColor="scheduleChipBackgroundColor(schedule.status)"
               :label="schedule.formattedStartTime" 
               v-if="schedule.startTime" 
             />
@@ -60,9 +61,9 @@
             <!-- Schedule - Title -->
             <div 
               class="ls-flex-grow-1 ls-flex-shrink-1 ellipsis-1" 
-              :class="(scheduleStatus(schedule.startTime) == 'now' ? 'bold ' : '') + scheduleColor(scheduleStatus(schedule.startTime)) + '--text'"
+              :class="(schedule.status == 'now' ? 'bold ' : '') + scheduleTextColor(schedule.status) + '--text'"
               v-if="schedule.title">
-              {{ schedule.title }}
+              {{ schedule.status }} {{ schedule.title }}
             </div>
           </div>
         </template>
@@ -92,7 +93,8 @@ export default {
 
   data() {
     return {
-      TWENTY_MINUTES: 1000 * 60 * 20
+      TWENTY_MINUTES: 1000 * 60 * 20,
+      currentScheduleIndex: null,
     }
   },
 
@@ -140,13 +142,20 @@ export default {
           countIntervals++
         }
       })
+
+      schedulesWithIntervals.forEach((s, i) => {
+        if(s == 'interval') return
+        s.status = this.scheduleStatus(formatTime(s.startTime), i)
+      })
+
+      console.log(schedulesWithIntervals)
       return schedulesWithIntervals
     },
  
     schedulesTotal() {
-      if(!this.timetable || !this.timetable.schedules || !this.timetable.schedules.length) return ''
+      if(!this.schedulesHydrated || !this.schedulesHydrated.length) return ''
 
-      const schedules = this.timetable.schedules.length
+      const schedules = this.schedulesHydrated.length
       return schedules == 1 ? '1 horário hoje' : schedules + ' horários hoje'
     },
 
@@ -170,15 +179,41 @@ export default {
       return date
     },
 
-    scheduleColor(status) {
+    scheduleChipColor(status) {
       return {
-        'past': 'grey-50',
+        'past': 'grey-60',
         'now': 'aqua',
-        'future': 'lead',
-      }[status] || 'lead'
+        'future': 'grey-70',
+      }[status]
     },
 
-    scheduleStatus(time) {
+    scheduleChipBackgroundColor(status) {
+      return {
+        'past': 'grey-20',
+        'now': 'aqua-opacity',
+        'future': 'grey-20',
+      }[status]
+    },
+
+    scheduleTextColor(status) {
+      return {
+        'past': 'grey-60',
+        'now': 'aqua',
+        'future': 'lead',
+      }[status]
+    },
+
+    scheduleStatus(time, index) {
+      const scheduleStartTime = this.convertTimeToDate(time)
+      const now = new Date()
+      const isPast = (now - scheduleStartTime) > 0
+      const isFuture = (now - scheduleStartTime) <= 0
+
+      if(typeof this.currentScheduleIndex != 'number' && isFuture){
+        this.currentScheduleIndex = index
+        return 'now'
+      }
+
       return 'future'
     }
   }

@@ -8,6 +8,7 @@
   --white: #FFFFFF;
   --purple: #5451D6;
   --aqua: #00B8AD;
+  --aqua-opacity: rgba(0, 184, 173, 0.08);
 }
 /*
   grey-10 - Text color, border color and background color
@@ -282,6 +283,20 @@
 }
 .aqua--text {
   color: var(--aqua) !important;
+}
+
+
+/*
+  aqua opacity - Text color, border color and background color
+*/
+.aqua-opacity {
+  background-color: var(--aqua-opacity) !important;
+}
+.aqua-opacity-outline {
+  border-color: var(--aqua-opacity) !important;
+}
+.aqua-opacity--text {
+  color: var(--aqua-opacity) !important;
 }
 
 

@@ -34,7 +34,23 @@ const mutations = {
       return
     }
 
-    // TODO
+    let weekdays = [...ALL_WEEKDAYS]
+    // Remove Sunday from weekdays if doesn't exist any schedules on Sunday
+    if(!_.find(timetable.schedules, { weekday: 'sunday' })) {
+      weekdays = weekdays.filter(d => d != 'sunday')
+    }
+    // Remove Saturday from weekdays if doesn't exist any schedules on Saturday
+    if(!_.find(timetable.schedules, { weekday: 'saturday' })) {
+      weekdays = weekdays.filter(d => d != 'saturday')
+    }
+
+    // Sort by startWeekday
+    if(timetable.startWeekday && _.includes(weekdays, timetable.startWeekday)) {
+      const startWeekdayIndex = weekdays.indexOf(timetable.startWeekday)
+      const beforeDays = weekdays.splice(0, startWeekdayIndex)
+      weekdays = [...weekdays, ...beforeDays]
+    }
+    state.weekdays = weekdays
   },
 
   setSelectedWeekday(state, index) {
@@ -69,7 +85,6 @@ const actions = {
         timetables.push(...intentResult.result)
       }
       context.commit('setTimetables', timetables)
-      context.commit('setLastFetch', new Date())
       context.commit('setLoading', false)
     } catch(err) {
       errorHandler(err, context.dispatch, 'fetch')
