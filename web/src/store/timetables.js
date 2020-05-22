@@ -70,7 +70,7 @@ const actions = {
   async fetch(context) {
     context.commit('setLoading', true)
     try {
-      let res = await Axios.get('/horarios')
+      let res = await Axios.get('/')
 
       let timetables = []
       for(let i = 0; i < res.data.length; i++){

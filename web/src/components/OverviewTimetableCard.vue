@@ -63,7 +63,7 @@
               class="ls-flex-grow-1 ls-flex-shrink-1 ellipsis-1" 
               :class="(schedule.status == 'now' ? 'bold ' : '') + scheduleTextColor(schedule.status) + '--text'"
               v-if="schedule.title">
-              {{ schedule.status }} {{ schedule.title }}
+              {{ schedule.title }}
             </div>
           </div>
         </template>
@@ -87,6 +87,7 @@ import Button from '@/components/Button'
 import Chip from '@/components/Chip'
 import { mapState } from 'vuex'
 import _ from 'lodash'
+import Vue from 'vue'
 
 export default {
   name: "OverviewTimetableCard",
@@ -145,10 +146,9 @@ export default {
 
       schedulesWithIntervals.forEach((s, i) => {
         if(s == 'interval') return
-        s.status = this.scheduleStatus(formatTime(s.startTime), i)
+        this.$set(schedulesWithIntervals[i], 'status', this.scheduleStatus(formatTime(s.startTime), i))
       })
 
-      console.log(schedulesWithIntervals)
       return schedulesWithIntervals
     },
  

@@ -9,10 +9,11 @@ import Colors from './styles/Colors.css'
 import Transitions from './styles/Transitions.css'
 import Text from './styles/Text.css'
 import Utils from './styles/Utils.css'
+import Environment from './environment'
 
 Vue.config.productionTip = false
 
-Axios.defaults.baseURL = "http://localhost:8050/layers-visao-de-horarios/us-central1"
+Axios.defaults.baseURL = Environment.API_URL
 
 new Vue({
   router,
