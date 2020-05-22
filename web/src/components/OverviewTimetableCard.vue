@@ -27,7 +27,7 @@
 
     <TransitionExpand v-show="expanded && showExpansionContent">
       <div class="pb-2 mt-3 schedules">
-        <template v-for="(schedule, i) in schedulesHydrated.reverse()">
+        <template v-for="(schedule, i) in schedulesHydrated">
           <div class="interval mx-3" v-if="schedule == 'interval'" :key="i">
             <div class="interval-dot"><img src="@/assets/dots.svg" width="18" height="24" /></div>
           </div>
@@ -273,23 +273,7 @@ export default {
   margin-left: -18px;
   margin-right: 6px;
 }
-.schedules {
-  display: flex;
-  flex-direction: column-reverse;
-}
-.schedules > .now + .interval,
-.schedules > .now + .past,
-.schedules > .now + .interval + .past {
-  opacity: 0.5;
-}
-.schedules > .now + .past + .past,
-.schedules > .now + .past + .interval + .past,
-.schedules > .now + .interval + .past + .interval,
-.schedules > .now + .interval + .past + .interval + .past{
-  opacity: 0.4;
-}
-.schedules > .now ~ div,
 .schedules > .past {
-  opacity: 0.3;
+  opacity: 0.5;
 }
 </style>
