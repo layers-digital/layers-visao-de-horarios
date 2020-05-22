@@ -26,12 +26,12 @@
     </div>
 
     <TransitionExpand v-show="expanded && showExpansionContent">
-      <div class="pb-2 mt-3">
+      <div class="pb-2 mt-3 schedules">
         <template v-for="(schedule, i) in schedulesHydrated">
-          <div class="schedule-interval mx-3" v-if="schedule == 'interval'" :key="i">
+          <div class="interval mx-3" v-if="schedule == 'interval'" :key="i">
             <div class="interval-dot"><img src="@/assets/dots.svg" width="18" height="24" /></div>
           </div>
-          <div class="schedule ls-d-flex ls-align-items-center mx-3 mb-2" :key="i" v-else-if="schedule">
+          <div class="schedule ls-d-flex ls-align-items-center mx-3 mb-2" :key="i" v-else-if="schedule" :class="schedule.status">
             <img 
               src="@/assets/marker.svg" 
               width="11"
@@ -94,7 +94,9 @@ export default {
 
   data() {
     return {
+      ONE_HOUR: 1000 * 60 * 60,
       TWENTY_MINUTES: 1000 * 60 * 20,
+      TEN_MINUTES: 1000 * 60 * 10,
       currentScheduleIndex: null,
     }
   },
@@ -122,31 +124,47 @@ export default {
 
     schedulesHydrated() {
       if(!this.timetable || !this.timetable.schedules || !this.timetable.schedules.length) return []
-
+    
       let schedules = this.timetable.schedules
-        .filter(s => s.weekday == getCurrentWeekday(this.weekdays))
+        .filter(s => s.weekday == getCurrentWeekday(this.weekdays) && s.startTime)
         .map(s => ({ ...s, formattedStartTime: formatTime(s.startTime) }))
 
       schedules = _.sortBy(schedules, 'formattedStartTime')
 
+      // Populate status in schedules
+      for (let i = 0; i < schedules.length; i++) {
+        const schedule = Object.assign({
+          status: this.scheduleStatus(formatTime(schedules[i].startTime), i)
+        }, schedules[i])
+        Vue.set(schedules, i, schedule)
+      }
+
       let countIntervals = 0
       const schedulesWithIntervals = [...schedules]
-
+      
       // Create intervals
       schedules.forEach((s, i) => {
         if(i == 0 && s != 'interval') return
-        const diff = this.convertTimeToDate(s.startTime) - this.convertTimeToDate(schedules[i - 1].startTime)
+
+        const previous = schedules[i - 1]
+        let previousEndTime
+
+        // if schedule don't have endTime, increment one hour by default
+        if(!previous.endTime) {
+          previousEndTime = this.convertTimeToDate(previous.startTime)
+          previousEndTime.setTime(previousEndTime.getTime() + this.ONE_HOUR)
+        } else {
+          previousEndTime = this.convertTimeToDate(previous.endTime)
+        }
+
+        // Calculate diff between schedule and previous schedule
+        const diff = this.convertTimeToDate(s.startTime) - this.convertTimeToDate(previousEndTime)
 
         // Create an interval if the diff between schedules if greater than twenty minutes
-        if(diff > this.TWENTY_MINUTES) {
+        if(diff >= this.TWENTY_MINUTES) {
           schedulesWithIntervals.splice(i + countIntervals, 0, 'interval')
           countIntervals++
         }
-      })
-
-      schedulesWithIntervals.forEach((s, i) => {
-        if(s == 'interval') return
-        this.$set(schedulesWithIntervals[i], 'status', this.scheduleStatus(formatTime(s.startTime), i))
       })
 
       return schedulesWithIntervals
@@ -155,7 +173,8 @@ export default {
     schedulesTotal() {
       if(!this.schedulesHydrated || !this.schedulesHydrated.length) return ''
 
-      const schedules = this.schedulesHydrated.length
+      const schedules = this.schedulesHydrated.filter(s => s != 'interval').length
+
       return schedules == 1 ? '1 horário hoje' : schedules + ' horários hoje'
     },
 
@@ -207,11 +226,15 @@ export default {
       const scheduleStartTime = this.convertTimeToDate(time)
       const now = new Date()
       const isPast = (now - scheduleStartTime) > 0
-      const isFuture = (now - scheduleStartTime) <= 0
+      const isNow = (now - scheduleStartTime) <= (this.TEN_MINUTES)
 
-      if(typeof this.currentScheduleIndex != 'number' && isFuture){
+      if(typeof this.currentScheduleIndex != 'number' && isNow || this.currentScheduleIndex == index){
         this.currentScheduleIndex = index
         return 'now'
+      }
+
+      if(isPast) {
+        return 'past'
       }
 
       return 'future'
@@ -230,7 +253,7 @@ export default {
 .expansion-header {
   height: 72px;
 }
-.schedule-interval {
+.interval {
   height: 24px;
   margin-top: -0.5rem;
 }
@@ -249,5 +272,8 @@ export default {
 .marker {
   margin-left: -18px;
   margin-right: 6px;
+}
+.schedules > .past {
+  opacity: 0.5;
 }
 </style>
