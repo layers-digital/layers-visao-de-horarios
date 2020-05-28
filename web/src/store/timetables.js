@@ -87,7 +87,7 @@ const actions = {
     
     context.commit('setLoading', true)
     try {
-      let res = await Axios.get('/related?community=' + community + '&token=' + token)
+      let res = await Axios.get('/related?community=' + context.state.community + '&token=' + context.state.token)
 
       let timetables = []
       for(let i = 0; i < res.data.length; i++){
