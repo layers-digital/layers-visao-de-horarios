@@ -80,8 +80,8 @@ const mutations = {
 
 const actions = {
   async fetch(context) {
-    let community = getQueryVariable('community')
-    let token = getQueryVariable('token')
+    const community = getQueryVariable('community')
+    const token = getQueryVariable('token')
     if(community) context.commit('setCommunity', community)
     if(token) context.commit('setToken', token)
     
@@ -106,6 +106,7 @@ const actions = {
         timetables = res.data.result
       }
       context.commit('setTimetables', timetables)
+      context.commit('setLastFetch', new Date())
       context.commit('setLoading', false)
     } catch(err) {
       errorHandler(err, context.dispatch, 'fetch')
