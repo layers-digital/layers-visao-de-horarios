@@ -6,6 +6,10 @@
   visibility: hidden;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .card {
   box-shadow: 0 0 0 1px var(--grey-30);
   border-radius: 12px;

@@ -1,5 +1,6 @@
 {
   "layers": {
-    "secret": "LAYERS SECRET"
+    "api": "https://localhost:8080/v1",
+    "secret": "SECRET"
   }
 }

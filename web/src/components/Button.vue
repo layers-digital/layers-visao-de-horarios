@@ -1,5 +1,5 @@
 <template>
-  <button class="ls-button lead-light--text bold">
+  <button class="ls-button lead-light--text bold cursor-pointer">
     {{ label }}
   </button>
 </template>

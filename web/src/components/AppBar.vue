@@ -3,7 +3,7 @@
     <div class="app-bar grey-30-outline">
       <div 
         @click="expand()" 
-        class="ls-row ls-no-gutters p-3 ls-align-items-center ls-flex-nowrap" style="height: 56px; z-index: 5;"
+        class="ls-row ls-no-gutters p-3 ls-align-items-center ls-flex-nowrap cursor-pointer" style="height: 56px; z-index: 5;"
       >
         <div @click="goToOverview()" class="ls-align-items-center mr-3 ls-flex-grow-0 ls-d-flex" style="max-width: 24px; height: 100%;">
           <Loader v-if="loading" />

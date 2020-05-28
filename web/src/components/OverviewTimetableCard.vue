@@ -1,6 +1,6 @@
 <template>
   <div class="overview-timetable-card white grey-70-light-outline">
-    <div class="expansion-header ls-d-flex ls-align-items-center px-3" @click="$emit('expand', !expanded)">
+    <div class="expansion-header ls-d-flex ls-align-items-center px-3" @click="$emit('expand', !expanded)" :class="showExpansionContent ? 'cursor-pointer' : ''">
       <div class="mr-3 ls-flex-grow-0">
         <img src="@/assets/student.svg" width="32" height="32" />
       </div>

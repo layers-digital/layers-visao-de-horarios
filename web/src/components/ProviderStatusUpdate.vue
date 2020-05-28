@@ -1,7 +1,7 @@
 <template>
   <div 
     class="provider-last-update grey-70--text ls-d-flex ls-align-items-center ellipsis" 
-    :class="!provider || !provider.name ? 'hidden' : ''">
+    :class="!provider || !provider.displayName ? 'hidden' : ''">
     <img 
       v-if="provider && provider.icon"
       :src="provider.icon" 
@@ -9,7 +9,7 @@
       width="24" 
       height="24" 
     />
-    <span>Dados Fornecido por {{ provider && provider.name }}</span> <b class="ml-1" v-if="lastFetchLabel">{{ lastFetchLabel }}</b>
+    <span>Dados Fornecido por {{ provider && provider.displayName }}</span> <b class="ml-1" v-if="lastFetchLabel">{{ lastFetchLabel }}</b>
   </div>
 </template>
 

@@ -6,6 +6,9 @@ import _ from 'lodash'
 const ALL_WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
 const state = {
+  community: null,
+  token: null,
+
   loading: false,
   timetables: [],
   weekdays: ALL_WEEKDAYS,
@@ -64,13 +67,24 @@ const mutations = {
   setTimetableExpandableIndex(state, index) {
     state.timetableExpandableIndex = index
   },
+
+  setCommunity(state, community) {
+    state.community = community
+  },
+
+  setToken(state, token) {
+    state.token = token
+  },
 }
 
 const actions = {
-  async fetch(context) {
+  async fetch(context, state) {
+    let community = context.state.community
+    let token = context.state.token
+    
     context.commit('setLoading', true)
     try {
-      let res = await Axios.get('/')
+      let res = await Axios.get('/related?community=' + community + '&token=' + token)
 
       let timetables = []
       for(let i = 0; i < res.data.length; i++){
@@ -83,6 +97,10 @@ const actions = {
           })
         }
         timetables.push(...intentResult.result)
+      }
+
+      if(!timetables.length && res.data.result){
+        timetables = res.data.result
       }
       context.commit('setTimetables', timetables)
       context.commit('setLoading', false)

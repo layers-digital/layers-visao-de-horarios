@@ -1,5 +1,5 @@
 <template>
-  <button class="ls-weekday-button" :class="selected ? 'lead border-none white--text' : 'lead-outline lead--text white'">
+  <button class="ls-weekday-button cursor-pointer" :class="selected ? 'lead border-none white--text' : 'lead-outline lead--text white'">
     {{ label }}
   </button>
 </template>

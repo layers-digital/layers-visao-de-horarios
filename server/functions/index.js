@@ -1,449 +1,109 @@
 const functions = require('firebase-functions');
 const express = require('express');
 const cors = require('cors');
+const axios = require('axios');
 
 const app = express();
+
+const INTENT = '@layers:education:Timetables:getRelated'
 
 // Automatically allow cross-origin requests
 app.use(cors({ origin: true }))
 
-let mockedData = [
-    {
-      "provider": {
-        "name": "Totvs",
-        "icon": "https://cdn.layers.digital/demo-escola/uploads/7d481323-4f95-417e-bc62-6eb4e58a066a/image8.png",
-      },
-      "result":  [
+app.get('/related', async function (req, res) {
+  const { token, community } = req.query
 
-      {
-        // ID interno da grade horária (opcional)
-        "id": "0002",
+  const apiLayers = functions.config().layers.api
+  const secret = functions.config().layers.secret
 
-        // Ano letivo (opcional)
-        "season": "2019",
-
-        // Nome do estudante (obrigatório)
-        "student": "ELISA POSSAMAI BORGES DA CUNHA",
-
-        // Nome do curso/série (opcional)
-        "course": "9º Ano",
-
-        // Dia em que começa a semana (opcional)
-        // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-        "startWeekday": "monday", // default: "sunday"
-
-        // Lista de horários
-        "schedules": [
-            {
-              "title": "ARTE",
-              "abbr": "ART",
-              "weekday": "friday",
-              "startTime": "07:00:00",
-              // "endTime": "07:50:00",
-              "location": "Campus SP, sala 12, bloco B",
-              "caption": "Prof(a): Ana Maria",
-            },
-            {
-              "title": "CIÊNCIAS",
-              "abbr": "CIE",
-              "weekday": "friday",
-              "startTime": "07:50:00",
-              "endTime": "08:40:00",
-              "location": "Campus SP, sala 12, bloco B",
-              "caption": "Prof(a): Joana",
-            },
-            {
-              "title": "EDUCAÇÃO FÍSICA",
-              "abbr": "EDF",
-              "weekday": "friday",
-              "startTime": "08:40:00",
-              "endTime": "09:30:00",
-              "location": "Campus SP, sala 12, bloco B",
-              "caption": "Prof(a): Fernando",
-            },
-            {
-              "title": "ROBÓTICA",
-              "abbr": "ROB",
-              "weekday": "friday",
-              "label": "Extracurricular",
-              "startTime": "21:00:00",
-              "endTime": "23:00:00",
-              "location": "Sala Criatividade",
-              "caption": "Prof(a): Marcelo",
-            },
-            {
-              "title": "ENSINO RELIGIOSO",
-              "abbr": "ENR",
-              "weekday": "friday",
-              "startTime": "20:00:00",
-              "endTime": "22:00:00",
-              "location": "Igreja",
-              "caption": "Prof(a): Padre Alonso",
-            },
-            {
-              "title": "GEOGRAFIA",
-              "abbr": "GEO",
-              "weekday": "friday",
-              "startTime": "09:50:00",
-              "endTime": "10:40:00",
-              "location": "Campus SP, sala 12, bloco B",
-              "caption": "Prof(a): Cláudio",
-            },
-            {
-              "title": "HISTÓRIA",
-              "abbr": "HIS",
-              "weekday": "friday",
-              "startTime": "10:40:00",
-              "endTime": "11:30:00",
-              "location": "Campus SP, sala 12, bloco B",
-              "caption": "Prof(a): Leila",
-            },
-            {
-              "title": "L.E.M. - INGLÊS",
-              "abbr": "ING",
-              "weekday": "friday",
-              "startTime": "11:30:00",
-              "endTime": "12:20:00",
-              "location": "Campus SP, sala 12, bloco B",
-              "caption": "Prof(a): Marcos",
-            },
-            {
-              "title": "LÍNGUA PORTUGUESA",
-              "abbr": "LPO",
-              "weekday": "thursday",
-              "startTime": "07:00:00",
-              "endTime": "07:50:00",
-              "location": "Campus SP, sala 12, bloco B",
-              "caption": "Prof(a): Carlos",
-            },
-            {
-              "title": "MATEMÁTICA",
-              "abbr": "MAT",
-              "weekday": "thursday",
-              "startTime": "07:50:00",
-              "endTime": "08:40:00",
-              "location": "Campus SP, sala 12, bloco B",
-              "caption": "Prof(a): Fabio",
-            }
-          ],
-      },
-
-
-      // Grade horária individual
-      {
-        // ID interno da grade horária (opcional)
-        "id": "0001",
-
-        // Ano letivo (opcional)
-        "season": "2019",
-
-        // Nome do estudante (obrigatório)
-        "student": "Ivan Seidel Gomes",
-
-        // Nome do curso/série (opcional)
-        "course": "9º Ano",
-
-        // Dia em que começa a semana (opcional)
-        // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-        "startWeekday": "monday", // default: "sunday"
-
-        // Lista de horários
-        "schedules": [{
-          // Título do horário (atividade, disciplina) (obrigatório)
-          "title": "Língua Portuguesa e os estudos",
-
-          // Abreviação do titulo (opcional)
-          "abbr": "PORT",
-
-          // Etiqueta do horário (opcional)
-          "label": "Grad",
-
-          // Dia da semana em que o horário é vigente (obrigatório)
-          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "tuesday",
-
-          // Horário de início (obrigatório)
-          "startTime": "21:00:00", // ISO 8601 (obrigatório)
-
-          // Horário de fim (opcional)
-          "endTime": "16:30:00", // Formato de HH:ISO 8601
-
-          // Localização do horário (opcional)
-          "location": "Campus SP, sala 12, bloco B",
-
-          // Subtítulo do horário (opcional)
-          "caption": "Prof(a): Ana Maria",
-        }, {
-          // Título do horário (atividade, disciplina) (obrigatório)
-          "title": "Língua Portuguesa e os estudos",
-
-          // Abreviação do titulo (opcional)
-          "abbr": "PORT",
-
-          // Etiqueta do horário (opcional)
-          "label": "Grad",
-
-          // Dia da semana em que o horário é vigente (obrigatório)
-          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "tuesday",
-
-          // Horário de início (obrigatório)
-          "startTime": "21:00:00", // ISO 8601 (obrigatório)
-
-          // Horário de fim (opcional)
-          "endTime": "16:30:00", // Formato de HH:ISO 8601
-
-          // Localização do horário (opcional)
-          "location": "Campus SP, sala 12, bloco B",
-
-          // Subtítulo do horário (opcional)
-          "caption": "Prof(a): Ana Maria",
-        }, {
-          // Título do horário (atividade, disciplina) (obrigatório)
-          "title": "Língua Portuguesa e os estudos",
-
-          // Abreviação do titulo (opcional)
-          "abbr": "PORT",
-
-          // Etiqueta do horário (opcional)
-          "label": "Grad",
-
-          // Dia da semana em que o horário é vigente (obrigatório)
-          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "thursday",
-
-          // Horário de início (obrigatório)
-          "startTime": "21:00:00", // ISO 8601 (obrigatório)
-
-          // Horário de fim (opcional)
-          "endTime": "16:30:00", // Formato de HH:ISO 8601
-
-          // Localização do horário (opcional)
-          "location": "Campus SP, sala 12, bloco B",
-
-          // Subtítulo do horário (opcional)
-          "caption": "Prof(a): Ana Maria",
-        }, {
-          // Título do horário (atividade, disciplina) (obrigatório)
-          "title": "Língua Portuguesa e os estudos",
-
-          // Abreviação do titulo (opcional)
-          "abbr": "PORT",
-
-          // Etiqueta do horário (opcional)
-          "label": "Grad",
-
-          // Dia da semana em que o horário é vigente (obrigatório)
-          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "thursday",
-
-          // Horário de início (obrigatório)
-          "startTime": "21:00:00", // ISO 8601 (obrigatório)
-
-          // Horário de fim (opcional)
-          "endTime": "16:30:00", // Formato de HH:ISO 8601
-
-          // Localização do horário (opcional)
-          "location": "Campus SP, sala 12, bloco B",
-
-          // Subtítulo do horário (opcional)
-          "caption": "Prof(a): Ana Maria",
-        }, {
-          // Título do horário (atividade, disciplina) (obrigatório)
-          "title": "Língua Portuguesa e os estudos",
-
-          // Abreviação do titulo (opcional)
-          "abbr": "PORT",
-
-          // Etiqueta do horário (opcional)
-          "label": "Grad",
-
-          // Dia da semana em que o horário é vigente (obrigatório)
-          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "thursday",
-
-          // Horário de início (obrigatório)
-          "startTime": "21:00:00", // ISO 8601 (obrigatório)
-
-          // Horário de fim (opcional)
-          "endTime": "16:30:00", // Formato de HH:ISO 8601
-
-          // Localização do horário (opcional)
-          "location": "Campus SP, sala 12, bloco B",
-
-          // Subtítulo do horário (opcional)
-          "caption": "Prof(a): Ana Maria",
-        },{
-          // Título do horário (atividade, disciplina) (obrigatório)
-          "title": "Física e os estudos",
-
-          // Abreviação do titulo (opcional)
-          "abbr": "FIS",
-
-          // Etiqueta do horário (opcional)
-          "label": "Extracurricular",
-
-          // Dia da semana em que o horário é vigente (obrigatório)
-          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "thursday",
-
-          // Horário de início (obrigatório)
-          "startTime": "03:00", // ISO 8601 (obrigatório)
-
-          // Horário de fim (opcional)
-          "endTime": "16:30:00", // Formato de HH:ISO 8601
-
-          // Localização do horário (opcional)
-          "location": "Campus SP, sala 12, bloco B",
-
-          // Subtítulo do horário (opcional)
-          "caption": "Prof(a): Ana Maria",
-        }, {
-          // Título do horário (atividade, disciplina) (obrigatório)
-          "title": "Matemática e os estudos",
-
-          // Abreviação do titulo (opcional)
-          "abbr": "MAT",
-
-          // Etiqueta do horário (opcional)
-          "label": "Extracurricular",
-
-          // Dia da semana em que o horário é vigente (obrigatório)
-          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "thursday",
-
-          // Horário de início (obrigatório)
-          "startTime": "03:01", // ISO 8601 (obrigatório)
-
-          // Horário de fim (opcional)
-          "endTime": "16:30:00", // Formato de HH:ISO 8601
-
-          // Localização do horário (opcional)
-          "location": "Campus SP, sala 12, bloco B",
-
-          // Subtítulo do horário (opcional)
-          "caption": "Prof(a): Ana Maria",
-        }, {
-          // Título do horário (atividade, disciplina) (obrigatório)
-          "title": "Geografia e os estudos",
-
-          // Abreviação do titulo (opcional)
-          "abbr": "GEO",
-
-          // Dia da semana em que o horário é vigente (obrigatório)
-          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "thursday",
-
-          // Horário de início (obrigatório)
-          "startTime": Date.now(), // ISO 8601 (obrigatório)
-
-          // Horário de fim (opcional)
-          "endTime": "16:30:00", // Formato de HH:ISO 8601
-
-          // Localização do horário (opcional)
-          "location": "Campus SP, sala 12, bloco B",
-
-          // Subtítulo do horário (opcional)
-          "caption": "Prof(a): Ana Maria",
-        }, {
-          // Título do horário (atividade, disciplina) (obrigatório)
-          "title": "História e os estudos",
-
-          // Abreviação do titulo (opcional)
-          "abbr": "HIS",
-
-          // Etiqueta do horário (opcional)
-          "label": "Extracurricular",
-
-          // Dia da semana em que o horário é vigente (obrigatório)
-          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "thursday",
-
-          // Horário de início (obrigatório)
-          "startTime": new Date(), // ISO 8601 (obrigatório)
-
-          // Horário de fim (opcional)
-          "endTime": "16:30:00", // Formato de HH:ISO 8601
-
-          // Localização do horário (opcional)
-          "location": "Campus SP, sala 12, bloco B",
-
-          // Subtítulo do horário (opcional)
-          "caption": "Prof(a): Ana Maria",
-        }, {
-          // Título do horário (atividade, disciplina) (obrigatório)
-          "title": "Biologia e os estudos",
-
-          // Abreviação do titulo (opcional)
-          "abbr": "BIO",
-
-          // Etiqueta do horário (opcional)
-          "label": "Extracurricular",
-
-          // Dia da semana em que o horário é vigente (obrigatório)
-          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "thursday",
-
-          // Horário de início (obrigatório)
-          "startTime": "23:00", // ISO 8601 (obrigatório)
-
-          // Horário de fim (opcional)
-          "endTime": "16:30:00", // Formato de HH:ISO 8601
-
-          // Localização do horário (opcional)
-          "location": "Campus SP, sala 12, bloco B",
-
-          // Subtítulo do horário (opcional)
-          "caption": "Prof(a): Ana Maria",
-        }, {
-          // Título do horário (atividade, disciplina) (obrigatório)
-          "title": "Filosofia e os estudos",
-
-          // Abreviação do titulo (opcional)
-          "abbr": "FIL",
-
-          // Etiqueta do horário (opcional)
-          "label": "Extracurricular",
-
-          // Dia da semana em que o horário é vigente (obrigatório)
-          // Valores aceitos: "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
-          "weekday": "friday",
-
-          // Horário de início (obrigatório)
-          "startTime": "15:0022", // ISO 8601 (obrigatório)
-
-          // Horário de fim (opcional)
-          "endTime": "16:30:00", // Formato de HH:ISO 8601
-
-          // Localização do horário (opcional)
-          "location": "Campus SP, sala 12, bloco B",
-
-          // Subtítulo do horário (opcional)
-          "caption": "Prof(a): Ana Maria",
-        }],
-      },
-    ]
+  if(!secret) {
+    return res.status(500).send({error: `Layers Secret not setted`})
   }
-]
 
-app.get('/', function (req, res) {
-  //Validate token
+  if(!apiLayers) {
+    return res.status(500).send({error: `Layers API not setted`})
+  }
 
-  //get user info
+  if(!token) {
+    return res.status(400).send({error: `user token not provided`})
+  }
 
-  //get layers secret
- //  const secret = functions.config().layers.secret
+  if(!community) {
+    return res.status(400).send({error: `community of user not provided`})
+  }
 
- //  if(!secret) {
- //    res.status(500).send({error: `secret not found`})
-	// }
+  const Layers = axios.create({
+    baseURL: functions.config().layers.api,
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'community-id': community
+    }
+  })
 
-  //Mount request
+  // Fetch user data
+  let userData = null
+  try {
+    let res = await Layers.get('/user/me/', {
+      headers: { 'Authorization': `Bearer ${token}`}
+    })
+    userData = res.data
+  } catch(err) {
+    return res.status(500).send({ error: `Erro ao buscar dados do usuário no Layers` })
+  }
 
-  //Make request
-  let payload = mockedData
+  // Discovery providers
+  let providers = null
+  try {
+    let res = await Layers.get(`/services/discover/${INTENT}?version=1`,
+    {
+      headers: { 'Authorization': `Bearer ${secret}` }
+    })
+    providers = res.data
+  } catch(err) {
+    return res.status(500).send({error: `Erro ao buscar dados dos providers no Layers` })
+  }
 
-  res.status(200).send(payload)
+  // Call intents
+  const promises = providers.map(async provider => {
+    const data = {
+      user: {
+        id: userData._id, 
+        name: userData.name, 
+        alias: userData.alias, 
+        // timezone: String,  // Fuso horário do usuário
+        // language: String,  // Língua preferencial do usuário
+        // accountId: String,  // ID da account do usuário
+      },
+    }
+    try {
+      return {
+        status: 'success',
+        provider: provider,
+        payload: await Layers.post(`/services/call/${INTENT}/${provider.id}?version=1`, data,
+        {
+          headers: { 'Authorization': `Bearer ${secret}` }
+        })
+      }
+    } catch(err) {
+      return {
+        status: 'error',
+        provider: provider,
+        payload: err
+      }
+    }
+  })
+  let providersData = await Promise.all(promises)
+  let payload = []
+
+  providersData.forEach(data => {
+    let providerPayload = {
+      provider: data.provider,
+      result: data.payload.data.data.result,
+    }
+    payload.push(providerPayload)
+  })
+
+  return res.status(200).send(payload)
 })
 
 // Expose Express API as a single Cloud Function:
