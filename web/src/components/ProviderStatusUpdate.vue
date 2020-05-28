@@ -9,7 +9,7 @@
       width="24" 
       height="24" 
     />
-    <span>Dados Fornecido por {{ provider && provider.displayName }}</span> <b class="ml-1" v-if="lastFetchLabel">{{ lastFetchLabel }}</b>
+    <span>Dados fornecidos por {{ provider && provider.displayName }}</span> <b class="ml-1" v-if="lastFetchLabel">{{ lastFetchLabel }}</b>
   </div>
 </template>
 
