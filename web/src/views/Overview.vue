@@ -37,7 +37,6 @@
 import { mapState, mapGetters } from 'vuex'
 import Skeleton from '@/components/Skeleton'
 import OverviewTimetableCard from '@/components/OverviewTimetableCard'
-import getQueryVariable from '@/helpers/getQueryVariable'
 import _ from 'lodash'
 
 export default {
@@ -50,11 +49,6 @@ export default {
 
   async created() {
     await this.$store.dispatch('timetables/fetch')
-
-    let community = getQueryVariable('community')
-    let token = getQueryVariable('token')
-    if(community) this.$store.commit('timetables/setCommunity', community)
-    if(community) this.$store.commit('timetables/setToken', token)
   },
 
   watch:{

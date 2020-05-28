@@ -2,6 +2,7 @@ import Axios from 'axios'
 import errorHandler from '@/helpers/errorHandler'
 import formatDate from '@/helpers/formatDate'
 import _ from 'lodash'
+import getQueryVariable from '@/helpers/getQueryVariable'
 
 const ALL_WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
@@ -78,9 +79,11 @@ const mutations = {
 }
 
 const actions = {
-  async fetch(context, state) {
-    let community = context.state.community
-    let token = context.state.token
+  async fetch(context) {
+    let community = getQueryVariable('community')
+    let token = getQueryVariable('token')
+    if(community) context.commit('setCommunity', community)
+    if(token) context.commit('setToken', token)
     
     context.commit('setLoading', true)
     try {
