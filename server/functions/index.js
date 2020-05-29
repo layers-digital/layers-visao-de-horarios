@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const _ = require('lodash');
 
 const app = express();
 
@@ -52,7 +53,7 @@ app.get('/related', async function (req, res) {
   }
 
   // Discovery providers
-  let providers = null
+  let providers = []
   try {
     let res = await Layers.get(`/services/discover/${INTENT}?version=1`,
     {
@@ -98,7 +99,7 @@ app.get('/related', async function (req, res) {
   providersData.forEach(data => {
     let providerPayload = {
       provider: data.provider,
-      result: data.payload.data.data.result,
+      result: _.get(data, 'payload.data.data.result', []),
     }
     payload.push(providerPayload)
   })
