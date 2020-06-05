@@ -16,24 +16,21 @@ export default function errorHandler(e, fnToRetry, fnToRetryParams) {
   }
 
   let action = {
-    label: 'Tentar novamente',
+    label: 'ATUALIZAR',
     color: 'white',
     fn: fnToRetry,
     fnParams: fnToRetryParams,
   }
 
   if(!window.navigator.onLine) {
-    params.message = 'Parece que você está desconectado'
+    params.message = 'Parece que você está offline.'
     params.type = 'info'
     retryable = true
   } else if (e.response && e.response.status && e.response.status >=  400 && e.response.status < 500) {
-    params.message = 'Ops, algo deu errado :('
+    params.message = 'Algumas informações não foram atualizadas.'
     retryable = true
   } else if (e.response && e.response.status >=  500) {
     params.message = 'Ops, encontramos um erro. Tente novamente mais tarde.'
-  } else if (e.message) {
-    params.message = e.message
-    retryable = true
   } else {
     params.message = 'Um problema aconteceu e foi enviado para análise'
     retryable = true

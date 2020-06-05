@@ -5,35 +5,13 @@
         @click="expand()" 
         class="ls-row ls-no-gutters p-3 ls-align-items-center ls-flex-nowrap cursor-pointer" style="height: 56px; z-index: 5;"
       >
-        <div @click="goToOverview()" class="ls-align-items-center mr-3 ls-flex-grow-0 ls-d-flex" style="max-width: 24px; height: 100%;">
-          <Loader v-if="loading" />
-          <img 
-            v-else-if="!loading && !expanded && currentPage.id != 'overview'" 
-            src="@/assets/user.svg" 
-            height="24" 
-            width="24" 
-            class="app-icon-radius" 
-          />
-          <img 
-            v-else
-            src="@/assets/bell.svg" 
-            height="24" 
-            width="24" 
-            class="app-icon-radius" 
-          />
-        </div>
         <div @click="goToOverview()" class="ls-align-items-center ls-flex-grow-1 ls-d-flex" style="height: 100%;">
           <span class="ls-text-center title ellipsis-1">
             {{ (!expanded && currentPage.id != 'overview') ? selectedTimetable && selectedTimetable.student : 'Resumo do dia' }}
           </span>
         </div>
         <div class="ls-align-items-center ls-flex-grow-0 ml-5 ls-d-flex" style="height: 100%;">
-          <img src="@/assets/arrow-down.svg"
-            class="group-chevron"
-            :class="{ 'active': expanded }"
-            height="24" 
-            width="24"
-          />
+          <img src="@/assets/menu.svg" height="24" width="24" />
         </div>
       </div>
       <div class="ls-d-flex weekdays" v-if="isShowWeekdays">
@@ -77,7 +55,6 @@
 import getCurrentWeekday from '@/helpers/getCurrentWeekday'
 import TransitionExpand from '@/components/TransitionExpand'
 import WeekdayButton from '@/components/WeekdayButton'
-import Loader from '@/components/Loader'
 import Chip from '@/components/Chip'
 import { mapState } from 'vuex'
 import _ from 'lodash'
@@ -96,7 +73,6 @@ export default {
   components: {
     TransitionExpand,
     Chip,
-    Loader,
     WeekdayButton,
   },
 

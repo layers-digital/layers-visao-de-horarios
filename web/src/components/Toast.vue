@@ -4,14 +4,17 @@
       <div class="ls-row ls-no-gutters toast ls-align-items-center" :class="color">
         <div class="ls-col">
           <div v-if="message" class="message">{{ message }}</div>
-          <button
-            v-if="options.action"
-            @click="callAction()"
-            class="action-btn" :class="actionColor">
-            {{ options.action.label }}
-          </button>
         </div>
-        <button v-if="options.closeable" @click="close()" class="close-btn">
+        <button
+          v-if="options.action"
+          @click="callAction()"
+          class="action-btn cursor-pointer" :class="actionColor">
+          {{ options.action.label }}
+        </button>
+        <div v-else-if="options.loading">
+          <Loader />
+        </div>
+        <button v-else @click="close()" class="close-btn cursor-pointer">
           <img src="@/assets/cancel.svg"
             height="24" width="24"/>
         </button>
@@ -20,6 +23,8 @@
   </transition>
 </template>
 <script>
+import Loader from '@/components/Loader'
+
 export default {
   name: 'Toast',
   props: {
@@ -38,6 +43,9 @@ export default {
       },
     },
   },
+  components: {
+    Loader
+  },
   data() {
     return {
       open: false,
@@ -55,7 +63,7 @@ export default {
       if (!val) {
         this.close();
       }
-    },
+    }
   },
   beforeMount() {
     document.body.appendChild(this.$el);

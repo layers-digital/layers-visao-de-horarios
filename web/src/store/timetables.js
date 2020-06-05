@@ -3,6 +3,7 @@ import errorHandler from '@/helpers/errorHandler'
 import formatDate from '@/helpers/formatDate'
 import _ from 'lodash'
 import getQueryVariable from '@/helpers/getQueryVariable'
+import Toast from '@/helpers/toast'
 
 const ALL_WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
@@ -85,7 +86,15 @@ const actions = {
     if(community) context.commit('setCommunity', community)
     if(token) context.commit('setToken', token)
     
+    // Show loading toast
     context.commit('setLoading', true)
+    Toast.open({ 
+      message: 'Estamos atualizando as informações.', 
+      position: 'bottom', 
+      timeout: 0, 
+      options: { loading: true }
+    })  
+
     try {
       let res = await Axios.get('/related?community=' + context.state.community + '&token=' + context.state.token)
 
@@ -108,7 +117,9 @@ const actions = {
       context.commit('setTimetables', timetables)
       context.commit('setLastFetch', new Date())
       context.commit('setLoading', false)
+      Toast.hideAll()
     } catch(err) {
+      Toast.hideAll()
       errorHandler(err, context.dispatch, 'fetch')
       context.commit('setLoading', false)
     }

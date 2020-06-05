@@ -1,13 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import getQueryVariable from '@/helpers/getQueryVariable'
+
 import timetables from './timetables'
 
-import createPersistedState from 'vuex-persistedstate';
+import persistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  plugins: [createPersistedState()],
+const community = getQueryVariable('community')
+
+export default new Vuex.Store({    
+  strict: true,
+  plugins: [
+    persistedState({
+      key: community
+    })
+  ],
   modules: {
     timetables,
   },

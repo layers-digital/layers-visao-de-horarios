@@ -15,7 +15,7 @@ export default function getCurrentWeekday(weekdays) {
   if(weekdays.indexOf('sunday') == -1 && currentWeekday == 'sunday'){
     currentWeekday = 'monday'
   } else if(weekdays.indexOf('saturday') == -1 && currentWeekday == 'saturday'){
-    currentWeekday = 'friday'
+    currentWeekday = 'monday'
   }
   return currentWeekday
 }
