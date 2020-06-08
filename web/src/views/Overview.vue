@@ -23,8 +23,7 @@
         Entre em contato com sua instituição de <br />
         ensino ou atualize a página
       </span>
-      <div class="ls-flex-grow-1 ls-flex-shrink-1"></div>
-      <div class="no-timetables-image">
+      <div class="no-timetables-image pt-4 mt-5">
         <img src="@/assets/empty-timetables.svg" width="268" height="208" />
       </div>
     </template>
@@ -108,7 +107,6 @@ export default {
 }
 .no-timetables-title {
   font-size: 16px;
-  margin-top: 72px;
 }
 .no-timetables-image {
   background-image: url('../assets/shape.svg');
