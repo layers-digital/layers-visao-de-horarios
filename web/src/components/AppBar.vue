@@ -35,9 +35,6 @@
             :to="link.route"
           >
             <div class="ls-row ls-no-gutters p-3 ls-align-items-center ls-flex-nowrap">
-              <div class="ls-col ls-align-self-center mr-3 ls-flex-grow-0" style="max-width: 24px;">
-                <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path :fill="link.id == currentPage.id ? '#2F8AF5': '#434E5B'" d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1,1,0,0,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1A10,10,0,0,0,15.71,12.71ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z"/></svg>
-              </div>
               <span class="align-center title ellipsis-1 ls-flex-grow-1">{{link.title}}</span>
               <Chip class="ls-flex-nowrap" :label="link.season" v-if="link.season" />
             </div>
