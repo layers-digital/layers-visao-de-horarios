@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "layers-visao-de-horarios"
+    "default": "layers-horarios-staging",
+    "staging": "layers-horarios-staging",
+    "production": "layers-visao-de-horarios"
   }
 }

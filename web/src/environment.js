@@ -7,7 +7,7 @@ function isLocal() {
 }
 
 function isStaging() {
-  if (URL == 'id.staging.layers.digital') return true
+  if (URL.includes('layers-horarios-staging')) return true
   return false
 }
 
@@ -18,7 +18,7 @@ function ApiLocation() {
   }
 
   if (isStaging()) {
-    return 'https://us-central1-layers-visao-de-horarios.cloudfunctions.net/api'
+    return 'https://us-central1-layers-horarios-staging.cloudfunctions.net/api'
   }
 
   // Defaults to production api
