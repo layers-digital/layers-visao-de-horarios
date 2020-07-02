@@ -12,21 +12,14 @@ const INTENT = '@layers:education:Timetables:getRelated'
 app.use(cors({ origin: true }))
 
 app.get('/related', async function (req, res) {
-  const { token, community } = req.query
+  const { userToken, community, session, userId } = req.query
 
-  const apiLayers = functions.config().layers.api
-  const secret = functions.config().layers.secret
-
-  if(!secret) {
-    return res.status(500).send({error: `Layers Secret not setted`})
+  if(!userToken && !session) {
+    return res.status(400).send({error: `user token or session not provided`})
   }
 
-  if(!apiLayers) {
-    return res.status(500).send({error: `Layers API not setted`})
-  }
-
-  if(!token) {
-    return res.status(400).send({error: `user token not provided`})
+  if(!userToken && session && !userId) {
+    return res.status(400).send({error: `userId not provided`})
   }
 
   if(!community) {
@@ -34,7 +27,7 @@ app.get('/related', async function (req, res) {
   }
 
   const Layers = axios.create({
-    baseURL: functions.config().layers.api,
+    baseURL: functions.config().layers.url,
     headers: {
       'Accept': 'application/json, text/plain, */*',
       'community-id': community
@@ -43,13 +36,35 @@ app.get('/related', async function (req, res) {
 
   // Fetch user data
   let userData = null
-  try {
-    let res = await Layers.get('/user/me/', {
-      headers: { 'Authorization': `Bearer ${token}`}
-    })
-    userData = res.data
-  } catch(err) {
-    return res.status(500).send({ error: `Erro ao buscar dados do usuário no Layers` })
+  if(session) {
+    try {
+      await Layers.get(`/sso/session/validate?community=${community}&session=${session}&userId=${userId}`, {
+        headers: { 'Authorization': functions.config().layers.token}
+      })
+    } catch(err) {
+      console.log('Invalid session', err)
+      return res.status(400).send({error: `Invalid session`})
+    }
+
+    try {
+      let res = await Layers.get(`/users/${userId}`, {
+        headers: { 'Authorization': functions.config().layers.token}
+      })
+      userData = res.data
+    } catch(err) {
+      console.log('Fetch user error (session)', err)
+      return res.status(500).send({error: `Error fetching user data`})
+    }
+  } else {
+    try {
+      let res = await Layers.get('/user/me/', {
+        headers: { 'Authorization': `Bearer ${userToken}`}
+      })
+      userData = res.data
+    } catch(err) {
+      console.log('Fetch user error', err)
+      return res.status(500).send({error: `Error fetching user data`})
+    }
   }
 
   // Discovery providers
@@ -57,7 +72,7 @@ app.get('/related', async function (req, res) {
   try {
     let res = await Layers.get(`/services/discover/${INTENT}?version=1`,
     {
-      headers: { 'Authorization': `Bearer ${secret}` }
+      headers: { 'Authorization': functions.config().layers.token }
     })
     providers = res.data
   } catch(err) {
@@ -68,9 +83,9 @@ app.get('/related', async function (req, res) {
   const promises = providers.map(async provider => {
     const data = {
       user: {
-        id: userData._id, 
-        name: userData.name, 
-        alias: userData.alias, 
+        id: userData._id,
+        name: userData.name,
+        alias: userData.alias,
         // timezone: String,  // Fuso horário do usuário
         // language: String,  // Língua preferencial do usuário
         // accountId: String,  // ID da account do usuário
@@ -82,7 +97,7 @@ app.get('/related', async function (req, res) {
         provider: provider,
         payload: await Layers.post(`/services/call/${INTENT}/${provider.id}?version=1`, data,
         {
-          headers: { 'Authorization': `Bearer ${secret}` }
+          headers: { 'Authorization': functions.config().layers.token }
         })
       }
     } catch(err) {
