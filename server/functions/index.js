@@ -68,9 +68,9 @@ app.get('/related', async function (req, res) {
   const promises = providers.map(async provider => {
     const data = {
       user: {
-        id: userData._id, 
-        name: userData.name, 
-        alias: userData.alias, 
+        id: userData._id,
+        name: userData.name,
+        alias: userData.alias,
         // timezone: String,  // Fuso horário do usuário
         // language: String,  // Língua preferencial do usuário
         // accountId: String,  // ID da account do usuário
@@ -80,7 +80,7 @@ app.get('/related', async function (req, res) {
       return {
         status: 'success',
         provider: provider,
-        payload: await Layers.post(`/services/call/${INTENT}/${provider.id}?version=1`, data,
+        payload: await Layers.post(`/services/call/${INTENT}/${provider.id}?version=1&timeout=10000`, data,
         {
           headers: { 'Authorization': `Bearer ${secret}` }
         })
