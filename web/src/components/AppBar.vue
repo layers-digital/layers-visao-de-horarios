@@ -15,13 +15,22 @@
         </div>
       </div>
       <div class="ls-d-flex weekdays" v-if="isShowWeekdays">
-        <WeekdayButton 
-          v-for="weekday in weekdays"
-          :key="weekday"
-          :label="weekdayLabel(weekday)"
-          :selected="weekday == selectedWeekday"
-          @click.native="$store.commit('timetables/setSelectedWeekday', weekday)"
+        <AttachmentButton 
+          v-if='hasAttachments'
+          :total="selectedTimetable.attachments.length"
+          class="mr-2"
+          :selected="selectedWeekday == 'attachments'"
+          @click.native="openAttachmentPage()"
         />
+        <template v-if="hasSchedules">
+          <WeekdayButton 
+            v-for="weekday in weekdays"
+            :key="weekday"
+            :label="weekdayLabel(weekday)"
+            :selected="weekday == selectedWeekday"
+            @click.native="selectWeekday(weekday)"
+          />
+        </template>
       </div>
       <TransitionExpand>
         <div v-if="expanded">
@@ -52,6 +61,7 @@
 import getCurrentWeekday from '@/helpers/getCurrentWeekday'
 import TransitionExpand from '@/components/TransitionExpand'
 import WeekdayButton from '@/components/WeekdayButton'
+import AttachmentButton from '@/components/AttachmentButton'
 import Chip from '@/components/Chip'
 import { mapState } from 'vuex'
 import _ from 'lodash'
@@ -71,6 +81,7 @@ export default {
     TransitionExpand,
     Chip,
     WeekdayButton,
+    AttachmentButton,
   },
 
   data() {
@@ -120,7 +131,15 @@ export default {
     },
 
     isShowWeekdays() {
-      return !this.expanded && this.currentPage.id != 'overview' && _.get(this.weekdays, 'length', 0)
+      return !this.expanded && this.currentPage.id != 'overview' && _.get(this.weekdays, 'length', 0) || this.hasAttachments
+    },
+
+    hasAttachments() {
+      return _.get(this.selectedTimetable, 'attachments.length', 0)
+    },
+
+    hasSchedules() {
+      return _.get(this.selectedTimetable, 'schedules.length', 0)
     }
   },
 
@@ -145,8 +164,13 @@ export default {
         let timetable = _.get(targetLink, 'route.params.timetable', null) || _.get(route, 'params.timetable', null)
         this.$store.commit('timetables/setSelectedTimetable', timetable)
 
-        let weekday = getCurrentWeekday(this.weekdays)
-        this.$store.commit('timetables/setSelectedWeekday', weekday)
+        // Set attachments view when don't have anyone schedule in timetable
+        if(!timetable || !timetable.schedules || !timetable.schedules.length){
+          this.openAttachmentPage()
+        } else {
+          let weekday = getCurrentWeekday(this.weekdays)
+          this.selectWeekday(weekday)
+        }
       }
     },
 
@@ -175,6 +199,16 @@ export default {
         'friday': 'Sex',
         'saturday': 'Sáb',
       }[weekday] || '-'
+    },
+
+    selectWeekday(weekday) {
+      this.$store.commit('timetables/setSelectedWeekday', weekday)
+      this.$store.commit('timetables/setBodyBackgroundColor', 'grey-10')
+    },
+
+    openAttachmentPage() {
+      this.$store.commit('timetables/setSelectedWeekday', 'attachments')
+      this.$store.commit('timetables/setBodyBackgroundColor', 'white')
     }
   }
 }

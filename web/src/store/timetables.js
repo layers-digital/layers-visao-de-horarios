@@ -8,6 +8,7 @@ import Toast from '@/helpers/toast'
 const ALL_WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
 const state = {
+  bodyBackgroundColor: 'grey-10',
   community: null,
   token: null,
 
@@ -23,6 +24,10 @@ const state = {
 }
 
 const mutations = {
+  setBodyBackgroundColor(state, color) {
+    state.bodyBackgroundColor = color
+  },
+
   setLoading(state, status) {
     state.loading = status
   },

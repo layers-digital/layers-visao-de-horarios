@@ -1,36 +1,48 @@
 <template>
-  <div class="ls-container p-3 grey-10 page">
+  <div class="ls-container p-3 page">
     <ProviderStatusUpdate :provider="selectedTimetable && selectedTimetable.provider" class="mt-2" />
 
-    <div class="selected-weekday ls-d-flex ls-align-items-center mt-3" v-if="selectedWeekdayLabel">
-      <span class="aqua--text bold">{{ selectedWeekdayLabel }}</span>
-    </div>
-
-    <div class="schedules-total mt-2 mb-3 bold lead--text" v-if="schedulesTotal">
-      {{ schedulesTotal }}
-    </div>
-
-    <template 
-      v-if="selectedWeekday && selectedTimetable && schedulesOfDay && schedulesOfDay.length">
-      <ScheduleRow
-        v-for="(schedule, i) in schedulesOfDay"
-        :key="schedule.weekday + i"
-        :schedule="schedule"
-        class="mb-3"
+    <div class="attachments mt-4" v-if="selectedWeekday == 'attachments'">
+      <AttachmentCard
+        v-for="(attachment, i) in selectedTimetable.attachments"
+        :key="i"
+        :attachment="attachment"
+        class="mb-2"
       />
-    </template>
-
-    <div class="grey-30-outline no-schedules white ls-d-flex ls-align-items-center p-3 mt-2" v-else>
-      <img src="@/assets/vacation.svg" width="92" height="64" />
-      <span class="grey-70--text no-schedules-text ml-3">
-        Não há horários nesse dia :)
-      </span>
     </div>
+
+    <template v-else>
+      <div class="selected-weekday ls-d-flex ls-align-items-center mt-3" v-if="selectedWeekdayLabel">
+        <span class="aqua--text bold">{{ selectedWeekdayLabel }}</span>
+      </div>
+
+      <div class="schedules-total mt-2 mb-3 bold lead--text" v-if="schedulesTotal">
+        {{ schedulesTotal }}
+      </div>
+
+      <template 
+        v-if="selectedWeekday && selectedTimetable && schedulesOfDay && schedulesOfDay.length">
+        <ScheduleRow
+          v-for="(schedule, i) in schedulesOfDay"
+          :key="schedule.weekday + i"
+          :schedule="schedule"
+          class="mb-3"
+        />
+      </template>
+
+      <div class="grey-30-outline no-schedules white ls-d-flex ls-align-items-center p-3 mt-2" v-else>
+        <img src="@/assets/vacation.svg" width="92" height="64" />
+        <span class="grey-70--text no-schedules-text ml-3">
+          Não há horários nesse dia :)
+        </span>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import ProviderStatusUpdate from '@/components/ProviderStatusUpdate'
+import AttachmentCard from '@/components/AttachmentCard'
 import ScheduleRow from '@/components/ScheduleRow'
 import formatTime from '@/helpers/formatTime'
 import { mapState, mapGetters } from 'vuex'
@@ -41,6 +53,7 @@ export default {
 
   components: {
     ProviderStatusUpdate,
+    AttachmentCard,
     ScheduleRow,
   },
 

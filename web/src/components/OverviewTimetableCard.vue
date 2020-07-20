@@ -21,7 +21,7 @@
     </div>
     <div
       class="grey-70--text mx-3 mb-2" 
-      v-else>
+      v-else-if="hasSchedules">
       Não há horários hoje
     </div>
 
@@ -71,7 +71,17 @@
     </TransitionExpand>
 
     <div class="m-3">
+      <template v-if="!hasSchedules && hasAttachments">
+        <AttachmentCard
+          v-for="(attachment, i) in timetable.attachments"
+          :key="i"
+          :attachment="attachment"
+          class="mb-3"
+        />
+      </template>
+
       <Button 
+        v-else
         @click.native="$emit('openTimetable')"
         label="Ver todos os horários"
       />
@@ -82,6 +92,7 @@
 <script type="text/javascript">
 import TransitionExpand from '@/components/TransitionExpand'
 import getCurrentWeekday from '@/helpers/getCurrentWeekday'
+import AttachmentCard from '@/components/AttachmentCard'
 import formatTime from '@/helpers/formatTime'
 import Button from '@/components/Button'
 import Chip from '@/components/Chip'
@@ -104,6 +115,7 @@ export default {
   components: {
     Button,
     Chip,
+    AttachmentCard,
     TransitionExpand,
   },
 
@@ -185,6 +197,14 @@ export default {
 
     showExpansionContent() {
       return _.get(this.timetable, 'schedules.length', null) && this.hasSchedulesToday
+    },
+
+    hasSchedules() {
+      return _.get(this.timetable, 'schedules.length', null)
+    },
+
+    hasAttachments() {
+      return _.get(this.timetable, 'attachments.length', null)
     },
   },
 
