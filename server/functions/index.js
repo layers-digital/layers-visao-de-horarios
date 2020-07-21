@@ -42,7 +42,6 @@ app.get('/related', async function (req, res) {
         headers: { 'Authorization': 'Bearer ' + functions.config().layers.secret }
       })
     } catch(err) {
-      console.log('Invalid session', err)
       return res.status(400).send({error: `Invalid session`})
     }
 
