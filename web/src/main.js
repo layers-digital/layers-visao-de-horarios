@@ -35,15 +35,21 @@ Vue.config.productionTip = false
 
 Axios.defaults.baseURL = Environment.API_URL
 
-new Vue({
-  router,
-  store,
-  General,
-  Grid,
-  Colors,
-  Transitions,
-  Text,
-  Utils,
-  Axios,
-  render: function (h) { return h(App) }
-}).$mount('#app')
+async function init() {
+  await store.dispatch('layers/init')
+
+  new Vue({
+    router,
+    store,
+    General,
+    Grid,
+    Colors,
+    Transitions,
+    Text,
+    Utils,
+    Axios,
+    render: function (h) { return h(App) }
+  }).$mount('#app')
+}
+
+init()

@@ -90,18 +90,29 @@ const actions = {
     const token = getQueryVariable('token')
     if(community) context.commit('setCommunity', community)
     if(token) context.commit('setToken', token)
-    
+
     // Show loading toast
     context.commit('setLoading', true)
-    Toast.open({ 
-      message: 'Estamos atualizando as informações.', 
-      position: 'bottom', 
-      timeout: 0, 
+    Toast.open({
+      message: 'Estamos atualizando as informações.',
+      position: 'bottom',
+      timeout: 0,
       options: { loading: true }
-    })  
+    })
+
+    const session = context.rootState.layers.session
+    const userId = context.rootState.layers.userId
+    const communityId = context.rootState.layers.communityId || context.state.community
 
     try {
-      let res = await Axios.get('/related?community=' + context.state.community + '&token=' + context.state.token)
+      const res = await Axios.get('/related', {
+        params: {
+          userToken: context.state.token,
+          community: communityId,
+          session: session,
+          userId: userId
+        }
+      })
 
       let timetables = []
       for(let i = 0; i < res.data.length; i++){
@@ -167,7 +178,7 @@ const getters = {
       'friday': 5,
       'saturday': 6
     }[state.selectedWeekday]
-  
+
     const date = new Date()
     const currentDay = date.getDay()
     const distance = dayOfWeek - currentDay
