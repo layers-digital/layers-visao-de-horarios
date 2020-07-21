@@ -8,6 +8,7 @@ import Toast from '@/helpers/toast'
 const ALL_WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
 const state = {
+  bodyBackgroundColor: 'grey-10',
   community: null,
   token: null,
 
@@ -23,6 +24,10 @@ const state = {
 }
 
 const mutations = {
+  setBodyBackgroundColor(state, color) {
+    state.bodyBackgroundColor = color
+  },
+
   setLoading(state, status) {
     state.loading = status
   },
@@ -100,7 +105,14 @@ const actions = {
     const communityId = context.rootState.layers.communityId || context.state.community
 
     try {
-      let res = await Axios.get(`/related?userToken=${context.state.token}&community=${communityId}&session=${session}&userId=${userId}`)
+      const res = await Axios.get('/related', {
+        params: {
+          userToken: context.state.token,
+          community: communityId,
+          session: session,
+          userId: userId
+        }
+      })
 
       let timetables = []
       for(let i = 0; i < res.data.length; i++){

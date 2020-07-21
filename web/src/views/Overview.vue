@@ -1,5 +1,5 @@
 <template>
-  <div class="page ls-container p-3 grey-10 ls-d-flex ls-flex-column ls-align-items-center"
+  <div class="page ls-container p-3 ls-d-flex ls-flex-column ls-align-items-center"
   :class="(!timetables || !timetables.length) && !loading ? 'ls-justify-content-center' : ''">
     <template v-if="timetables && timetables.length">
       <div class="lead-light--text mb-3 today"> 
@@ -48,6 +48,7 @@ export default {
   },
 
   async created() {
+    this.$store.commit('timetables/setBodyBackgroundColor', 'grey-10')
     await this.$store.dispatch('timetables/fetch')
   },
 

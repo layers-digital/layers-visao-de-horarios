@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="ls-ma-0">
-    <div class="content-wrap grey-10">
+    <div class="content-wrap" :class="bodyBackgroundColor">
       <AppBar
       class="app-bar-layout"/>
       <transition :name="transitionName"
@@ -13,6 +13,7 @@
 
 <script>
 import AppBar from '@/components/AppBar'
+import { mapState } from 'vuex'
 
 export default {
   name: 'App',
@@ -24,6 +25,10 @@ export default {
   data: () => ({
     transitionName: 'slide-left',
   }),
+
+  computed: {
+    ...mapState('timetables', ['bodyBackgroundColor'])
+  },
 
   watch: {
     '$route' (to, from) {

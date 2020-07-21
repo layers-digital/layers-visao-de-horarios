@@ -27,7 +27,7 @@ app.get('/related', async function (req, res) {
   }
 
   const Layers = axios.create({
-    baseURL: functions.config().layers.url,
+    baseURL: functions.config().layers.api,
     headers: {
       'Accept': 'application/json, text/plain, */*',
       'community-id': community
@@ -39,7 +39,7 @@ app.get('/related', async function (req, res) {
   if(session) {
     try {
       await Layers.get(`/sso/session/validate?community=${community}&session=${session}&userId=${userId}`, {
-        headers: { 'Authorization': functions.config().layers.token}
+        headers: { 'Authorization': 'Bearer ' + functions.config().layers.secret }
       })
     } catch(err) {
       console.log('Invalid session', err)
@@ -48,22 +48,21 @@ app.get('/related', async function (req, res) {
 
     try {
       let res = await Layers.get(`/users/${userId}`, {
-        headers: { 'Authorization': functions.config().layers.token}
+        headers: { 'Authorization': 'Bearer ' + functions.config().layers.secret }
       })
       userData = res.data
     } catch(err) {
-      console.log('Fetch user error (session)', err)
       return res.status(500).send({error: `Error fetching user data`})
     }
   } else {
+    // Deprecated method to validate user token
     try {
       let res = await Layers.get('/user/me/', {
         headers: { 'Authorization': `Bearer ${userToken}`}
       })
       userData = res.data
     } catch(err) {
-      console.log('Fetch user error', err)
-      return res.status(500).send({error: `Error fetching user data`})
+      return res.status(500).send({error: `Error fetching user data using deprecated method`})
     }
   }
 
@@ -72,7 +71,7 @@ app.get('/related', async function (req, res) {
   try {
     let res = await Layers.get(`/services/discover/${INTENT}?version=1`,
     {
-      headers: { 'Authorization': functions.config().layers.token }
+      headers: { 'Authorization': 'Bearer ' + functions.config().layers.secret }
     })
     providers = res.data
   } catch(err) {
@@ -95,9 +94,9 @@ app.get('/related', async function (req, res) {
       return {
         status: 'success',
         provider: provider,
-        payload: await Layers.post(`/services/call/${INTENT}/${provider.id}?version=1`, data,
+        payload: await Layers.post(`/services/call/${INTENT}/${provider.id}?version=1&timeout=10000`, data,
         {
-          headers: { 'Authorization': functions.config().layers.token }
+          headers: { 'Authorization': 'Bearer ' + functions.config().layers.secret }
         })
       }
     } catch(err) {
