@@ -14,15 +14,15 @@ function isStaging() {
 function ApiLocation() {
   // Handle local development
   if (isLocal()) {
-    return 'http://localhost:8050/layers-visao-de-horarios/us-central1/api'
+    return 'http://localhost:8050/layers-visao-de-horarios/us-central1'
   }
 
   if (isStaging()) {
-    return 'https://us-central1-layers-horarios-staging.cloudfunctions.net/api'
+    return '/api'
   }
 
   // Defaults to production api
-  return 'https://us-central1-layers-visao-de-horarios.cloudfunctions.net/api'
+  return '/api'
 }
 
 export default {
