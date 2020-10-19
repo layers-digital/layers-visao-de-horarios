@@ -1,51 +1,57 @@
 <template>
-  <button class="ls-attachment-button bold" :class="selected ? 'lead box-shadow-none white--text' : 'lead--text white'">
-   <img 
-    src="@/assets/paperclip.svg" 
-    width="16" 
-    height="16" 
-    class="mr-1"
-    v-if="selected" />
+  <button
+    class="ls-attachment-button bold"
+    :class="selected ? 'lead box-shadow-none white--text' : 'lead--text white'"
+  >
+    <img
+      src="@/assets/paperclip.svg"
+      width="16"
+      height="16"
+      class="mr-1"
+      v-if="selected"
+    />
 
-  <img 
-    src="@/assets/paperclip-lead.svg" 
-    width="16" 
-    height="16" 
-    class="mr-1"
-    v-else /> {{ counter }}
+    <img
+      src="@/assets/paperclip-lead.svg"
+      width="16"
+      height="16"
+      class="mr-1"
+      v-else
+    />
+    {{ counter }}
   </button>
 </template>
 
 <script type="text/javascript">
 export default {
-  name: 'AttachmentButton',
+  name: "AttachmentButton",
 
   props: {
     selected: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     total: {
-      type: Number
-    }
+      type: Number,
+    },
   },
 
-  computed: {    
+  computed: {
     counter() {
-      if(this.total >= 100) {
-        return '99+'
+      if (this.total >= 100) {
+        return "99+";
       }
 
-      return `(${this.total})`
-    }
-  }
-}
+      return `(${this.total})`;
+    },
+  },
+};
 </script>
 
 <style type="text/css" scoped>
 .ls-attachment-button {
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
   border-radius: 100px;
   padding-left: 8px;
   padding-right: 8px;

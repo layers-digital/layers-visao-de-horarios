@@ -1,14 +1,22 @@
-import Axios from 'axios'
-import errorHandler from '@/helpers/errorHandler'
-import formatDate from '@/helpers/formatDate'
-import _ from 'lodash'
-import getQueryVariable from '@/helpers/getQueryVariable'
-import Toast from '@/helpers/toast'
+import Axios from "axios";
+import errorHandler from "@/helpers/errorHandler";
+import formatDate from "@/helpers/formatDate";
+import _ from "lodash";
+import getQueryVariable from "@/helpers/getQueryVariable";
+import Toast from "@/helpers/toast";
 
-const ALL_WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+const ALL_WEEKDAYS = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+];
 
 const state = {
-  bodyBackgroundColor: 'grey-10',
+  bodyBackgroundColor: "grey-10",
   community: null,
   token: null,
 
@@ -21,193 +29,197 @@ const state = {
   selectedWeekday: null,
 
   timetableExpandableIndex: null,
-}
+};
 
 const mutations = {
   setBodyBackgroundColor(state, color) {
-    state.bodyBackgroundColor = color
+    state.bodyBackgroundColor = color;
   },
 
   setLoading(state, status) {
-    state.loading = status
+    state.loading = status;
   },
 
   setTimetables(state, timetables) {
-    state.timetables = timetables
+    state.timetables = timetables;
   },
 
   setSelectedTimetable(state, timetable) {
-    state.selectedTimetable = timetable
+    state.selectedTimetable = timetable;
 
-    if(!timetable || !timetable.schedules || !timetable.schedules.length) {
-      state.weekdays = ALL_WEEKDAYS
-      return
+    if (!timetable || !timetable.schedules || !timetable.schedules.length) {
+      state.weekdays = ALL_WEEKDAYS;
+      return;
     }
 
-    let weekdays = [...ALL_WEEKDAYS]
+    let weekdays = [...ALL_WEEKDAYS];
     // Remove Sunday from weekdays if doesn't exist any schedules on Sunday
-    if(!_.find(timetable.schedules, { weekday: 'sunday' })) {
-      weekdays = weekdays.filter(d => d != 'sunday')
+    if (!_.find(timetable.schedules, { weekday: "sunday" })) {
+      weekdays = weekdays.filter((d) => d != "sunday");
     }
     // Remove Saturday from weekdays if doesn't exist any schedules on Saturday
-    if(!_.find(timetable.schedules, { weekday: 'saturday' })) {
-      weekdays = weekdays.filter(d => d != 'saturday')
+    if (!_.find(timetable.schedules, { weekday: "saturday" })) {
+      weekdays = weekdays.filter((d) => d != "saturday");
     }
 
     // Sort by startWeekday
-    if(timetable.startWeekday && _.includes(weekdays, timetable.startWeekday)) {
-      const startWeekdayIndex = weekdays.indexOf(timetable.startWeekday)
-      const beforeDays = weekdays.splice(0, startWeekdayIndex)
-      weekdays = [...weekdays, ...beforeDays]
+    if (
+      timetable.startWeekday &&
+      _.includes(weekdays, timetable.startWeekday)
+    ) {
+      const startWeekdayIndex = weekdays.indexOf(timetable.startWeekday);
+      const beforeDays = weekdays.splice(0, startWeekdayIndex);
+      weekdays = [...weekdays, ...beforeDays];
     }
-    state.weekdays = weekdays
+    state.weekdays = weekdays;
   },
 
   setSelectedWeekday(state, index) {
-    state.selectedWeekday = index
+    state.selectedWeekday = index;
   },
 
   setLastFetch(state, lastFetch) {
-    state.lastFetch = lastFetch
+    state.lastFetch = lastFetch;
   },
 
   setTimetableExpandableIndex(state, index) {
-    state.timetableExpandableIndex = index
+    state.timetableExpandableIndex = index;
   },
 
   setCommunity(state, community) {
-    state.community = community
+    state.community = community;
   },
 
   setToken(state, token) {
-    state.token = token
+    state.token = token;
   },
-}
+};
 
 const actions = {
   async fetch(context) {
-    const community = getQueryVariable('community')
-    const token = getQueryVariable('token')
-    if(community) context.commit('setCommunity', community)
-    if(token) context.commit('setToken', token)
+    const community = getQueryVariable("community");
+    const token = getQueryVariable("token");
+    if (community) context.commit("setCommunity", community);
+    if (token) context.commit("setToken", token);
 
     // Show loading toast
-    context.commit('setLoading', true)
+    context.commit("setLoading", true);
     Toast.open({
-      message: 'Estamos atualizando as informações.',
-      position: 'bottom',
+      message: "Estamos atualizando as informações.",
+      position: "bottom",
       timeout: 0,
-      options: { loading: true }
-    })
+      options: { loading: true },
+    });
 
-    const session = context.rootState.layers.session
-    const userId = context.rootState.layers.userId
-    const communityId = context.rootState.layers.communityId || context.state.community
+    const session = context.rootState.layers.session;
+    const userId = context.rootState.layers.userId;
+    const communityId =
+      context.rootState.layers.communityId || context.state.community;
 
     try {
-      const res = await Axios.get('/related', {
+      const res = await Axios.get("/related", {
         params: {
           userToken: context.state.token,
           community: communityId,
           session: session,
-          userId: userId
-        }
-      })
+          userId: userId,
+        },
+      });
 
-      let timetables = []
-      for(let i = 0; i < res.data.length; i++){
-        let intentResult = res.data[i]
-        if(!intentResult.result) continue
+      let timetables = [];
+      for (let i = 0; i < res.data.length; i++) {
+        let intentResult = res.data[i];
+        if (!intentResult.result) continue;
 
-        if(intentResult.provider){
+        if (intentResult.provider) {
           intentResult.result.map((timetable) => {
-            timetable.provider = intentResult.provider
-          })
+            timetable.provider = intentResult.provider;
+          });
         }
-        timetables.push(...intentResult.result)
+        timetables.push(...intentResult.result);
       }
 
-      if(!timetables.length && res.data.result){
-        timetables = res.data.result
+      if (!timetables.length && res.data.result) {
+        timetables = res.data.result;
       }
-      context.commit('setTimetables', timetables)
-      context.commit('setLastFetch', new Date())
-      context.commit('setLoading', false)
-      Toast.hideAll()
-    } catch(err) {
-      Toast.hideAll()
+      context.commit("setTimetables", timetables);
+      context.commit("setLastFetch", new Date());
+      context.commit("setLoading", false);
+      Toast.hideAll();
+    } catch (err) {
+      Toast.hideAll();
       errorHandler({
         error: err,
         parameters: {
           action: {
             callback: () => {
-              Toast.hideAll()
-              context.dispatch('fetch')
+              Toast.hideAll();
+              context.dispatch("fetch");
             },
-            label: 'ATUALIZAR'
+            label: "ATUALIZAR",
           },
-          timeout: 0
-        }
-      })
-      context.commit('setLoading', false)
+          timeout: 0,
+        },
+      });
+      context.commit("setLoading", false);
     }
-  }
-}
+  },
+};
 
 const getters = {
-  currentWeekdayLabel: state => {
+  currentWeekdayLabel: (state) => {
     const date = new Date();
-    let weekday
+    let weekday;
     const weekdays = {
-      'sunday': 'Domingo',
-      'monday': 'Segunda-feira',
-      'tuesday': 'Terça-feira',
-      'wednesday': 'Quarta-feira',
-      'thursday': 'Quinta-feira',
-      'friday': 'Sexta-feira',
-      'saturday': 'Sábado',
-    }
-    if(!state.selectedWeekday) {
-      weekday = weekdays[Object.keys(weekdays)[date.getDay()]]
+      sunday: "Domingo",
+      monday: "Segunda-feira",
+      tuesday: "Terça-feira",
+      wednesday: "Quarta-feira",
+      thursday: "Quinta-feira",
+      friday: "Sexta-feira",
+      saturday: "Sábado",
+    };
+    if (!state.selectedWeekday) {
+      weekday = weekdays[Object.keys(weekdays)[date.getDay()]];
     } else if (state.selectedWeekday) {
-      weekday = weekdays[state.selectedWeekday]
+      weekday = weekdays[state.selectedWeekday];
     }
 
     return weekday;
   },
 
-  currentSelectedDayLabel: state => {
-    if(!state.selectedWeekday) {
-      return ''
+  currentSelectedDayLabel: (state) => {
+    if (!state.selectedWeekday) {
+      return "";
     }
 
     const dayOfWeek = {
-      'sunday': 0,
-      'monday': 1,
-      'tuesday': 2,
-      'wednesday': 3,
-      'thursday': 4,
-      'friday': 5,
-      'saturday': 6
-    }[state.selectedWeekday]
+      sunday: 0,
+      monday: 1,
+      tuesday: 2,
+      wednesday: 3,
+      thursday: 4,
+      friday: 5,
+      saturday: 6,
+    }[state.selectedWeekday];
 
-    const date = new Date()
-    const currentDay = date.getDay()
-    const distance = dayOfWeek - currentDay
+    const date = new Date();
+    const currentDay = date.getDay();
+    const distance = dayOfWeek - currentDay;
     date.setDate(date.getDate() + distance);
-    date.setHours(0)
-    date.setMinutes(0)
-    date.setSeconds(0)
-    date.setMilliseconds(0)
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
 
     return formatDate(date);
-  }
-}
+  },
+};
 
 export default {
   namespaced: true,
   state,
   getters,
   actions,
-  mutations
-}
+  mutations,
+};
