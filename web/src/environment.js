@@ -1,30 +1,30 @@
 // TODO: Do not check URL in order to know the environment
-const URL = window.location.hostname
+const URL = window.location.hostname;
 function isLocal() {
-  if (URL == 'localhost') return true
-  if (URL.includes('192.168')) return true
-  return false
+  if (URL == "localhost") return true;
+  if (URL.includes("192.168")) return true;
+  return false;
 }
 
 function isStaging() {
-  if (URL.includes('layers-horarios-staging')) return true
-  return false
+  if (URL.includes("layers-horarios-staging")) return true;
+  return false;
 }
 
 function ApiLocation() {
   // Handle local development
   if (isLocal()) {
-    return 'http://localhost:8050/layers-visao-de-horarios/us-central1'
+    return "http://localhost:8050/layers-visao-de-horarios/us-central1";
   }
 
   if (isStaging()) {
-    return '/api'
+    return "/api";
   }
 
   // Defaults to production api
-  return '/api'
+  return "/api";
 }
 
 export default {
-  API_URL: ApiLocation()
-}
+  API_URL: ApiLocation(),
+};
