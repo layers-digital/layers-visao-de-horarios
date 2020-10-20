@@ -111,10 +111,9 @@ const actions = {
       options: { loading: true },
     });
 
-    const session = context.rootState.layers.session;
-    const userId = context.rootState.layers.userId;
-    const communityId =
-      context.rootState.layers.communityId || context.state.community;
+    const session = LayersPortal.session;
+    const userId = LayersPortal.userId;
+    const communityId = LayersPortal.communityId;
 
     try {
       const res = await Axios.get("/related", {
