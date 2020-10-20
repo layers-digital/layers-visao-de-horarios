@@ -5,7 +5,7 @@ on:
       - '!.github/workflows/**'
       - 'web/**'
     branches:
-      - staging
+      - master
 
 defaults:
   run:
