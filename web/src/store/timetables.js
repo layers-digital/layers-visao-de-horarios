@@ -3,7 +3,6 @@ import errorHandler from "@/helpers/errorHandler";
 import formatDate from "@/helpers/formatDate";
 import _ from "lodash";
 import getQueryVariable from "@/helpers/getQueryVariable";
-import Toast from "@/helpers/toast";
 
 const ALL_WEEKDAYS = [
   "sunday",
@@ -104,12 +103,6 @@ const actions = {
 
     // Show loading toast
     context.commit("setLoading", true);
-    Toast.open({
-      message: "Estamos atualizando as informações.",
-      position: "bottom",
-      timeout: 0,
-      options: { loading: true },
-    });
 
     const session = LayersPortal.session;
     const userId = LayersPortal.userId;
@@ -144,15 +137,12 @@ const actions = {
       context.commit("setTimetables", timetables);
       context.commit("setLastFetch", new Date());
       context.commit("setLoading", false);
-      Toast.hideAll();
     } catch (err) {
-      Toast.hideAll();
       errorHandler({
         error: err,
         parameters: {
           action: {
             callback: () => {
-              Toast.hideAll();
               context.dispatch("fetch");
             },
             label: "ATUALIZAR",

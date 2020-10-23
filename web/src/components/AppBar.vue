@@ -77,6 +77,7 @@
     <transition name="fade">
       <div v-if="expanded" @click="expanded = !expanded" class="overlay"></div>
     </transition>
+    <LinearProgress v-if="loading" />
   </div>
 </template>
 
@@ -85,6 +86,7 @@ import getCurrentWeekday from "@/helpers/getCurrentWeekday";
 import TransitionExpand from "@/components/TransitionExpand";
 import WeekdayButton from "@/components/WeekdayButton";
 import AttachmentButton from "@/components/AttachmentButton";
+import LinearProgress from "@/components/LinearProgress";
 import Chip from "@/components/Chip";
 import { mapState } from "vuex";
 import _ from "lodash";
@@ -105,6 +107,7 @@ export default {
     Chip,
     WeekdayButton,
     AttachmentButton,
+    LinearProgress,
   },
 
   data() {
