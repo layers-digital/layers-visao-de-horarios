@@ -1,41 +1,43 @@
 <template>
-  <div 
-    class="provider-last-update grey-70--text ls-d-flex ls-align-items-center" 
-    :class="!provider || !provider.displayName ? 'hidden' : ''">
-    <img 
+  <div
+    class="provider-last-update grey-70--text ls-d-flex ls-align-items-center"
+    :class="!provider || !provider.displayName ? 'hidden' : ''"
+  >
+    <img
       v-if="provider && provider.icon"
-      :src="provider.icon" 
-      class="provider-icon grey-30-outline mr-2 ls-flex-grow-0 s-flex-shrink-0" 
-      width="24" 
-      height="24" 
+      :src="provider.icon"
+      class="provider-icon grey-30-outline mr-2 ls-flex-grow-0 s-flex-shrink-0"
+      width="24"
+      height="24"
     />
     <div class="ellipsis-2 ls-flex-grow-1 ls-flex-shrink-1 provider-info">
-      <span>Dados fornecidos por {{ provider && provider.displayName }}</span> <b v-if="lastFetchLabel">{{ lastFetchLabel }}</b>
+      <span>Dados fornecidos por {{ provider && provider.displayName }}</span>
+      <b v-if="lastFetchLabel">{{ lastFetchLabel }}</b>
     </div>
   </div>
 </template>
 
 <script type="text/javascript">
-import { mapState } from 'vuex'
-import formatRelativeDate from '@/helpers/formatRelativeDate'
+import { mapState } from "vuex";
+import formatRelativeDate from "@/helpers/formatRelativeDate";
 
 export default {
   name: "ProviderStatusUpdate",
 
   props: {
     provider: {
-      type: Object
-    }
+      type: Object,
+    },
   },
 
   computed: {
-    ...mapState('timetables', ['lastFetch']),
+    ...mapState("timetables", ["lastFetch"]),
 
     lastFetchLabel() {
-      return formatRelativeDate(this.lastFetch)
-    }
-  }
-}
+      return formatRelativeDate(this.lastFetch);
+    },
+  },
+};
 </script>
 
 <style type="text/css">

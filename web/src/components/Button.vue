@@ -11,18 +11,18 @@ export default {
   props: {
     label: {
       type: String,
-      required: true
-    }
-  }
-}
+      required: true,
+    },
+  },
+};
 </script>
 
 <style scoped>
 .ls-button {
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
   width: 100%;
   font-size: 14px;
-  border: 1px solid #D7DEE3;
+  border: 1px solid #d7dee3;
   border-radius: 4px;
   min-height: 40px;
   background-color: #fff;
@@ -31,6 +31,6 @@ export default {
   padding: 0px;
 }
 .ls-button:active {
-  background-color: #D7DEE3;
+  background-color: #d7dee3;
 }
 </style>

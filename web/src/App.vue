@@ -1,43 +1,41 @@
 <template>
   <div id="app" class="ls-ma-0">
     <div class="content-wrap" :class="bodyBackgroundColor">
-      <AppBar
-      class="app-bar-layout"/>
-      <transition :name="transitionName"
-        mode="out-in">
-        <router-view style="padding-top: 72px !important;"></router-view>
+      <AppBar class="app-bar-layout" />
+      <transition :name="transitionName" mode="out-in">
+        <router-view style="padding-top: 72px !important"></router-view>
       </transition>
     </div>
   </div>
 </template>
 
 <script>
-import AppBar from '@/components/AppBar'
-import { mapState } from 'vuex'
+import AppBar from "@/components/AppBar";
+import { mapState } from "vuex";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
     AppBar,
   },
 
   data: () => ({
-    transitionName: 'slide-left',
+    transitionName: "slide-left",
   }),
 
   computed: {
-    ...mapState('timetables', ['bodyBackgroundColor'])
+    ...mapState("timetables", ["bodyBackgroundColor"]),
   },
 
   watch: {
-    '$route' (to, from) {
-      const toDepth = to.path.split('/').length
-      const fromDepth = from.path.split('/').length
-      this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
-    }
+    $route(to, from) {
+      const toDepth = to.path.split("/").length;
+      const fromDepth = from.path.split("/").length;
+      this.transitionName = toDepth < fromDepth ? "slide-right" : "slide-left";
+    },
   },
-}
+};
 </script>
 
 <style scoped>

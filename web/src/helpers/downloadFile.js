@@ -1,27 +1,27 @@
-import Toast from '@/helpers/toast'
+import Toast from "@/helpers/toast";
 
-export default async function downloadFile(url, name) {
-  Toast.open({ 
-    message: 'Estamos fazendo download do arquivo...', 
-    position: 'bottom', 
-    type: 'success',
-    timeout: 4000, 
-    options: { loading: true }
-  })
+export default async function downloadFile(url) {
+  Toast.open({
+    message: "Estamos fazendo download do arquivo...",
+    position: "bottom",
+    type: "success",
+    timeout: 4000,
+    options: { loading: true },
+  });
 
   try {
-    const result = await window.LayersPortal('download', {
+    await window.LayersPortal("download", {
       url: url,
-      name: 'file-' + Date.now() + '.pdf'
+      name: "file-" + Date.now() + ".pdf",
       // name: name,
-    })
+    });
   } catch (error) {
-    Toast.hideAll()
+    Toast.hideAll();
     Toast.open({
-      message: 'Ops! Algo deu errado no seu download, tente novamente.',
-      type: 'danger',
-      position: 'bottom',
-      timeout: 10000
-    })
+      message: "Ops! Algo deu errado no seu download, tente novamente.",
+      type: "danger",
+      position: "bottom",
+      timeout: 10000,
+    });
   }
 }

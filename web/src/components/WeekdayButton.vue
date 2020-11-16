@@ -1,30 +1,37 @@
 <template>
-  <button class="ls-weekday-button cursor-pointer" :class="selected ? 'lead border-none white--text' : 'lead-outline lead--text white'">
+  <button
+    class="ls-weekday-button cursor-pointer"
+    :class="
+      selected
+        ? 'lead border-none white--text'
+        : 'lead-outline lead--text white'
+    "
+  >
     {{ label }}
   </button>
 </template>
 
 <script type="text/javascript">
 export default {
-  name: 'WeekdayButton',
+  name: "WeekdayButton",
 
   props: {
     selected: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     label: {
       type: String,
-      required: true
-    }
-  }
-}
+      required: true,
+    },
+  },
+};
 </script>
 
 <style type="text/css" scoped>
 .ls-weekday-button {
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
   border-radius: 100px;
   padding-left: 12px;
   padding-right: 12px;
