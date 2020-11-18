@@ -106,7 +106,7 @@ const actions = {
 
     const session = LayersPortal.session;
     const userId = LayersPortal.userId;
-    const communityId = LayersPortal.communityId;
+    const communityId = LayersPortal.communityId || community;
 
     try {
       const res = await Axios.get("/related", {
