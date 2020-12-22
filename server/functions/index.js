@@ -18,7 +18,7 @@ app.use(Sentry.Handlers.requestHandler())
 
 app.use(cors())
 
-app.get('/', async function (req, res) {
+app.get('/', async function (req, res, next) {
   try {
     // Disable CORS when is running locally
     if(process.env.FUNCTIONS_EMULATOR) {
