@@ -1,4 +1,5 @@
 const functions = require('firebase-functions');
+const Sentry = require('@sentry/node')
 
 // Initialize Sentry
 Sentry.init({
