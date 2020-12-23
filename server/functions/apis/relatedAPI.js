@@ -1,4 +1,3 @@
-const functions = require('firebase-functions')
 const Sentry = require('@sentry/node')
 const express = require('express')
 const cors = require('cors')
@@ -10,11 +9,6 @@ const LayersAPI = require('../LayersAPI')
 
 const app = express()
 
-Sentry.init({
-  dsn: functions.config().sentry.dsn,
-  environment: functions.config().sentry.env,
-  attachStacktrace: true,
-})
 app.use(Sentry.Handlers.requestHandler())
 
 app.use(cors())
