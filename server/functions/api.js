@@ -51,7 +51,7 @@ app.get('/api/related', async function (req, res, next) {
     } else {
       // Deprecated method to validate user token
       try {
-        userData = await Layers.fetchUserData(userToken)
+        userData = await Layers.legacyFetchUserData(userToken)
       } catch(err) {
         if(!err.response) throw new InternalError(err.message)
         throw new AxiosError(err)
