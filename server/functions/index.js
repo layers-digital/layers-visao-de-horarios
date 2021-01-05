@@ -8,7 +8,5 @@ Sentry.init({
   attachStacktrace: true,
 })
 
-const relatedAPI = require('./apis/relatedAPI');
-
-// Expose Express API as a single Cloud Function:
-exports.related = functions.https.onRequest(relatedAPI);
+const api = require('./api');
+exports.api = functions.https.onRequest(api);
