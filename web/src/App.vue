@@ -52,8 +52,8 @@ export default {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  min-height: 100vh;
   max-width: 100%;
+  min-height: 100vh;
   position: relative;
 }
 
