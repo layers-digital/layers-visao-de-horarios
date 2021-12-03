@@ -34,7 +34,7 @@ export default {
     ...mapState("timetables", ["lastFetch"]),
 
     providerName() {
-      return `${this.provider && this.provider.displayName} `
+      return `${this.provider && this.provider.displayName} `;
     },
 
     lastFetchLabel() {
