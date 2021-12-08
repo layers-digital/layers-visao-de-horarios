@@ -11,7 +11,7 @@
       height="24"
     />
     <div class="ellipsis-2 ls-flex-grow-1 ls-flex-shrink-1 provider-info">
-      <span>Dados fornecidos por {{ provider && provider.displayName }}</span>
+      <span>Dados fornecidos por {{ providerName }}</span>
       <b v-if="lastFetchLabel">{{ lastFetchLabel }}</b>
     </div>
   </div>
@@ -32,6 +32,10 @@ export default {
 
   computed: {
     ...mapState("timetables", ["lastFetch"]),
+
+    providerName() {
+      return `${this.provider && this.provider.displayName} `;
+    },
 
     lastFetchLabel() {
       return formatRelativeDate(this.lastFetch);
