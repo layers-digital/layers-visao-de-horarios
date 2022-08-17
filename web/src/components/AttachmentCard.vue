@@ -29,8 +29,11 @@ export default {
   },
 
   methods: {
-    async openAttachment(url) {
-      return downloadFile(url);
+    async openAttachment(url, title) {
+      if (this.attachment.type == "link") {
+        return await window.LayersPortal("go", url);
+      }
+      return downloadFile(url, title);
     },
   },
 };
