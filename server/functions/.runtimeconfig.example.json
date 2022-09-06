@@ -1,0 +1,18 @@
+{
+  "database": {
+    "url": "https://layers-visao-de-horarios.firebaseio.com"
+  },
+  "sentry": {
+    "env": "production",
+    "dsn": "SENTRY_DSN"
+  },
+  "layers": {
+    "app": {
+      "secret": "APP_SECRET",
+      "id": "layers-visao-de-horarios",
+      "community": "admin"
+    },
+    "api": "http://localhost:8009/v1",
+    "token": "Bearer local-test-layers-visao-de-horarios"
+  }
+}
