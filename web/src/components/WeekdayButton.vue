@@ -1,11 +1,7 @@
 <template>
   <button
     class="ls-weekday-button cursor-pointer"
-    :class="
-      selected
-        ? 'lead border-none white--text'
-        : 'lead-outline lead--text white'
-    "
+    :class="selected ? 'lead border-none white--text' : 'lead-outline lead--text white'"
   >
     {{ label }}
   </button>
@@ -13,7 +9,7 @@
 
 <script type="text/javascript">
 export default {
-  name: "WeekdayButton",
+  name: 'WeekdayButton',
 
   props: {
     selected: {
@@ -31,7 +27,7 @@ export default {
 
 <style type="text/css" scoped>
 .ls-weekday-button {
-  font-family: "Nunito", sans-serif;
+  font-family: 'Nunito', sans-serif;
   border-radius: 100px;
   padding-left: 12px;
   padding-right: 12px;

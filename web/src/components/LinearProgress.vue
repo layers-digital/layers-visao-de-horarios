@@ -10,10 +10,10 @@
 </template>
 <script>
 export default {
-  tagName: "l-linear-progress",
+  tagName: 'l-linear-progress',
   props: {
-    color: { type: String, default: () => "rainbow" },
-    background: { type: String, default: () => "transparent" },
+    color: { type: String, default: () => 'rainbow' },
+    background: { type: String, default: () => 'transparent' },
     height: { type: Number, default: () => 4 },
   },
 };
@@ -28,14 +28,7 @@ export default {
   transition: 0.2s cubic-bezier(0.4, 0, 0.6, 1);
 }
 .l-linear-progress .rainbow {
-  background: linear-gradient(
-    90deg,
-    #00b8ad 0%,
-    #5451d6 33.19%,
-    #f97777 50%,
-    #ffca65 90%,
-    #ffca65 100%
-  );
+  background: linear-gradient(90deg, #00b8ad 0%, #5451d6 33.19%, #f97777 50%, #ffca65 90%, #ffca65 100%);
 }
 .l-linear-progress-indeterminate {
   height: inherit;

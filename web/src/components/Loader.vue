@@ -2,22 +2,14 @@
   <div class="loader-container">
     <div class="loader">
       <svg class="circular" viewBox="25 25 50 50">
-        <circle
-          class="path"
-          cx="50"
-          cy="50"
-          r="20"
-          fill="none"
-          stroke-width="5"
-          stroke-miterlimit="10"
-        />
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10" />
       </svg>
     </div>
   </div>
 </template>
 <script type="text/javascript">
 export default {
-  name: "Loader",
+  name: 'Loader',
 };
 </script>
 <style type="text/css" scoped>
@@ -42,7 +34,7 @@ export default {
 }
 
 .loader:before {
-  content: "";
+  content: '';
   display: block;
   padding-top: 100%;
 }

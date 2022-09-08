@@ -1,4 +1,4 @@
-import getQueryVariable from "@/helpers/getQueryVariable";
+import getQueryVariable from '@/helpers/getQueryVariable';
 
 const state = {
   session: null,
@@ -10,7 +10,7 @@ const state = {
 const actions = {
   async init() {
     // Check if has token in query params and ignore Layers SDK connection
-    const token = getQueryVariable("token");
+    const token = getQueryVariable('token');
     if (token) {
       console.warn("Using user's token instead of session");
       return;
@@ -18,7 +18,7 @@ const actions = {
 
     await LayersPortal.readyPromise;
     if (!LayersPortal.platform) {
-      throw new Error("Layers Portal is not connected");
+      throw new Error('Layers Portal is not connected');
     }
 
     await LayersPortal.connectedPromise;

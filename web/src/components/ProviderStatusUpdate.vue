@@ -18,11 +18,11 @@
 </template>
 
 <script type="text/javascript">
-import { mapState } from "vuex";
-import formatRelativeDate from "@/helpers/formatRelativeDate";
+import { mapState } from 'vuex';
+import formatRelativeDate from '@/helpers/formatRelativeDate';
 
 export default {
-  name: "ProviderStatusUpdate",
+  name: 'ProviderStatusUpdate',
 
   props: {
     provider: {
@@ -31,7 +31,7 @@ export default {
   },
 
   computed: {
-    ...mapState("timetables", ["lastFetch"]),
+    ...mapState('timetables', ['lastFetch']),
 
     providerName() {
       return `${this.provider && this.provider.displayName} `;

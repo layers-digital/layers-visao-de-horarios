@@ -9,32 +9,21 @@
         <img src="@/assets/student.svg" width="32" height="32" />
       </div>
       <div class="ls-flex-grow-1">
-        <div
-          class="lead--text bold ellipsis-2"
-          style="line-height: 110%; font-size: 16px"
-        >
+        <div class="lead--text bold ellipsis-2" style="line-height: 110%; font-size: 16px">
           {{ timetable.student }}
         </div>
         <div class="lead--text ellipsis-1">{{ timetable.course }}</div>
       </div>
       <div class="ls-flex-grow-0 pl-3">
-        <img
-          src="@/assets/arrow-up.svg"
-          v-if="expanded && showExpansionContent"
-        />
-        <img
-          src="@/assets/arrow-down.svg"
-          v-else-if="!expanded && showExpansionContent"
-        />
+        <img src="@/assets/arrow-up.svg" v-if="expanded && showExpansionContent" />
+        <img src="@/assets/arrow-down.svg" v-else-if="!expanded && showExpansionContent" />
       </div>
     </div>
 
     <div class="purple--text bold mx-3" v-if="showExpansionContent">
       {{ schedulesTotal }}
     </div>
-    <div class="grey-70--text mx-3 mb-2" v-else-if="hasSchedules">
-      Não há horários hoje
-    </div>
+    <div class="grey-70--text mx-3 mb-2" v-else-if="hasSchedules">Não há horários hoje</div>
 
     <TransitionExpand v-show="expanded && showExpansionContent">
       <div class="pb-2 mt-3 schedules">
@@ -50,13 +39,7 @@
             v-else-if="schedule"
             :class="schedule.status"
           >
-            <img
-              src="@/assets/marker.svg"
-              width="11"
-              height="14"
-              class="marker"
-              v-if="schedule.status == 'now'"
-            />
+            <img src="@/assets/marker.svg" width="11" height="14" class="marker" v-if="schedule.status == 'now'" />
 
             <!-- Schedule - Start time -->
             <Chip
@@ -79,11 +62,7 @@
             <!-- Schedule - Title -->
             <div
               class="ls-flex-grow-1 ls-flex-shrink-1 ellipsis-1"
-              :class="
-                (schedule.status == 'now' ? 'bold ' : '') +
-                scheduleTextColor(schedule.status) +
-                '--text'
-              "
+              :class="(schedule.status == 'now' ? 'bold ' : '') + scheduleTextColor(schedule.status) + '--text'"
               v-if="schedule.title"
             >
               {{ schedule.title }}
@@ -103,28 +82,24 @@
         />
       </template>
 
-      <Button
-        v-else
-        @click.native="$emit('openTimetable')"
-        label="Ver todos os horários"
-      />
+      <Button v-else @click.native="$emit('openTimetable')" label="Ver todos os horários" />
     </div>
   </div>
 </template>
 
 <script type="text/javascript">
-import TransitionExpand from "@/components/TransitionExpand";
-import getCurrentWeekday from "@/helpers/getCurrentWeekday";
-import AttachmentCard from "@/components/AttachmentCard";
-import formatTime from "@/helpers/formatTime";
-import Button from "@/components/Button";
-import Chip from "@/components/Chip";
-import { mapState } from "vuex";
-import _ from "lodash";
-import Vue from "vue";
+import TransitionExpand from '@/components/TransitionExpand';
+import getCurrentWeekday from '@/helpers/getCurrentWeekday';
+import AttachmentCard from '@/components/AttachmentCard';
+import formatTime from '@/helpers/formatTime';
+import Button from '@/components/Button';
+import Chip from '@/components/Chip';
+import { mapState } from 'vuex';
+import _ from 'lodash';
+import Vue from 'vue';
 
 export default {
-  name: "OverviewTimetableCard",
+  name: 'OverviewTimetableCard',
 
   data() {
     return {
@@ -155,23 +130,16 @@ export default {
   },
 
   computed: {
-    ...mapState("timetables", ["weekdays"]),
+    ...mapState('timetables', ['weekdays']),
 
     schedulesHydrated() {
-      if (
-        !this.timetable ||
-        !this.timetable.schedules ||
-        !this.timetable.schedules.length
-      )
-        return [];
+      if (!this.timetable || !this.timetable.schedules || !this.timetable.schedules.length) return [];
 
       let schedules = this.timetable.schedules
-        .filter(
-          (s) => s.weekday == getCurrentWeekday(this.weekdays) && s.startTime
-        )
+        .filter((s) => s.weekday == getCurrentWeekday(this.weekdays) && s.startTime)
         .map((s) => ({ ...s, formattedStartTime: formatTime(s.startTime) }));
 
-      schedules = _.sortBy(schedules, "formattedStartTime");
+      schedules = _.sortBy(schedules, 'formattedStartTime');
 
       // Populate status in schedules
       for (let i = 0; i < schedules.length; i++) {
@@ -189,7 +157,7 @@ export default {
 
       // Create intervals
       schedules.forEach((s, i) => {
-        if (i == 0 && s != "interval") return;
+        if (i == 0 && s != 'interval') return;
 
         const previous = schedules[i - 1];
         let previousEndTime;
@@ -203,13 +171,11 @@ export default {
         }
 
         // Calculate diff between schedule and previous schedule
-        const diff =
-          this.convertTimeToDate(s.startTime) -
-          this.convertTimeToDate(previousEndTime);
+        const diff = this.convertTimeToDate(s.startTime) - this.convertTimeToDate(previousEndTime);
 
         // Create an interval if the diff between schedules if greater than twenty minutes
         if (diff >= this.TWENTY_MINUTES) {
-          schedulesWithIntervals.splice(i + countIntervals, 0, "interval");
+          schedulesWithIntervals.splice(i + countIntervals, 0, 'interval');
           countIntervals++;
         }
       });
@@ -218,47 +184,36 @@ export default {
     },
 
     schedulesTotal() {
-      if (!this.schedulesHydrated || !this.schedulesHydrated.length) return "";
+      if (!this.schedulesHydrated || !this.schedulesHydrated.length) return '';
 
-      const schedules = this.schedulesHydrated.filter((s) => s != "interval")
-        .length;
+      const schedules = this.schedulesHydrated.filter((s) => s != 'interval').length;
 
-      return schedules == 1 ? "1 horário hoje" : schedules + " horários hoje";
+      return schedules == 1 ? '1 horário hoje' : schedules + ' horários hoje';
     },
 
     hasSchedulesToday() {
-      if (
-        !this.timetable ||
-        !this.timetable.schedules ||
-        !this.timetable.schedules.length
-      )
-        return false;
-      return this.timetable.schedules.find(
-        (t) => t.weekday == getCurrentWeekday(this.weekdays)
-      );
+      if (!this.timetable || !this.timetable.schedules || !this.timetable.schedules.length) return false;
+      return this.timetable.schedules.find((t) => t.weekday == getCurrentWeekday(this.weekdays));
     },
 
     showExpansionContent() {
-      return (
-        _.get(this.timetable, "schedules.length", null) &&
-        this.hasSchedulesToday
-      );
+      return _.get(this.timetable, 'schedules.length', null) && this.hasSchedulesToday;
     },
 
     hasSchedules() {
-      return _.get(this.timetable, "schedules.length", null);
+      return _.get(this.timetable, 'schedules.length', null);
     },
 
     hasAttachments() {
-      return _.get(this.timetable, "attachments.length", null);
+      return _.get(this.timetable, 'attachments.length', null);
     },
   },
 
   methods: {
     convertTimeToDate(time) {
       let date = new Date();
-      date.setHours(formatTime(time).split(":")[0]);
-      date.setMinutes(formatTime(time).split(":")[1]);
+      date.setHours(formatTime(time).split(':')[0]);
+      date.setMinutes(formatTime(time).split(':')[1]);
       date.setSeconds(0);
       date.setMilliseconds(0);
       return date;
@@ -266,25 +221,25 @@ export default {
 
     scheduleChipColor(status) {
       return {
-        past: "grey-60",
-        now: "aqua",
-        future: "grey-70",
+        past: 'grey-60',
+        now: 'aqua',
+        future: 'grey-70',
       }[status];
     },
 
     scheduleChipBackgroundColor(status) {
       return {
-        past: "grey-20",
-        now: "aqua-opacity",
-        future: "grey-20",
+        past: 'grey-20',
+        now: 'aqua-opacity',
+        future: 'grey-20',
       }[status];
     },
 
     scheduleTextColor(status) {
       return {
-        past: "grey-60",
-        now: "aqua",
-        future: "lead",
+        past: 'grey-60',
+        now: 'aqua',
+        future: 'lead',
       }[status];
     },
 
@@ -294,19 +249,16 @@ export default {
       const isPast = now - scheduleStartTime > 0;
       const isNow = now - scheduleStartTime <= this.TEN_MINUTES;
 
-      if (
-        (typeof this.currentScheduleIndex != "number" && isNow) ||
-        this.currentScheduleIndex == index
-      ) {
+      if ((typeof this.currentScheduleIndex != 'number' && isNow) || this.currentScheduleIndex == index) {
         this.currentScheduleIndex = index;
-        return "now";
+        return 'now';
       }
 
       if (isPast) {
-        return "past";
+        return 'past';
       }
 
-      return "future";
+      return 'future';
     },
   },
 };
