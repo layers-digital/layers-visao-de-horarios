@@ -42,19 +42,17 @@ function ApiLocation() {
 
 function getGAEnvs() {
   if (isLocal() || isStaging()) {
-    // CRIAR PROJETO NO FIREBASE E PEGAR ENVS
     return {
-      apiKey: '',
-      authDomain: '',
-      databaseURL: '',
-      projectId: '',
-      storageBucket: '',
-      messagingSenderId: '',
-      appId: '',
-      measurementId: '',
+      apiKey: 'AIzaSyCz-PLZr-lT1wgoPfFkh0GPZ115G5gjvPU',
+      authDomain: 'layers-horarios-staging.firebaseapp.com',
+      databaseURL: 'https://layers-horarios-staging.firebaseio.com',
+      projectId: 'layers-horarios-staging',
+      storageBucket: 'layers-horarios-staging.appspot.com',
+      messagingSenderId: '1057507792239',
+      appId: '1:1057507792239:web:93ab33cbc090656b6bc49a',
+      measurementId: 'G-4PDWFJE08E',
     };
   }
-  // PEGAR ENVS
   return {
     apiKey: 'AIzaSyClHapIUfABfG7HlGLX7MldyTJMHqlO36w',
     authDomain: 'layers-visao-de-horarios.firebaseapp.com',
@@ -68,10 +66,10 @@ function getGAEnvs() {
 }
 
 function getAmplitudeEnvs() {
-  //DEFINIR ORGANIZACAO DO AMPLITUDE E PEGAR ENVS
+  //DEFINIR ORGANIZACAO DO AMPLITUDE PROD E PEGAR ENVS
   if (isLocal() || isStaging()) {
     return {
-      apiKey: '',
+      apiKey: '8a1851e3850941ec180e615198eae946',
     };
   }
 
