@@ -1,15 +1,12 @@
 <template>
   <div
     class="page ls-container p-3 ls-d-flex ls-flex-column ls-align-items-center"
-    :class="
-      (!timetables || !timetables.length) && !loading
-        ? 'ls-justify-content-center'
-        : ''
-    "
+    :class="(!timetables || !timetables.length) && !loading ? 'ls-justify-content-center' : ''"
   >
     <template v-if="timetables && timetables.length">
       <div class="lead-light--text mb-3 today">
-        Hoje, <b class="aqua--text">{{ currentWeekdayLabel }}</b>
+        Hoje,
+        <b class="aqua--text">{{ currentWeekdayLabel }}</b>
       </div>
       <OverviewTimetableCard
         v-for="(timetable, i) in timetables"
@@ -17,18 +14,15 @@
         :timetable="timetable"
         class="mb-2"
         @openTimetable="openTimetable(timetable)"
-        :expanded="
-          timetableExpandableIndex == i || includes(timetableExpandableIndex, i)
-        "
+        :expanded="timetableExpandableIndex == i || includes(timetableExpandableIndex, i)"
         @expand="expand(i, $event)"
       />
     </template>
     <template v-else-if="!loading">
-      <span class="no-timetables-title bold mb-2 lead--text text-center">
-        Não há informações disponíveis :(
-      </span>
+      <span class="no-timetables-title bold mb-2 lead--text text-center">Não há informações disponíveis :(</span>
       <span class="lead-light--text text-center">
-        Entre em contato com sua instituição de <br />
+        Entre em contato com sua instituição de
+        <br />
         ensino ou atualize a página
       </span>
       <div class="no-timetables-image pt-4 mt-5">
@@ -36,24 +30,20 @@
       </div>
     </template>
     <template v-else>
-      <Skeleton
-        v-for="index in 6"
-        :key="index"
-        class="mb-3"
-        style="opacity: 0.7"
-      />
+      <Skeleton v-for="index in 6" :key="index" class="mb-3" style="opacity: 0.7" />
     </template>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
-import Skeleton from "@/components/Skeleton";
-import OverviewTimetableCard from "@/components/OverviewTimetableCard";
-import _ from "lodash";
+import { mapState, mapGetters } from 'vuex';
+import Skeleton from '@/components/Skeleton';
+import OverviewTimetableCard from '@/components/OverviewTimetableCard';
+import _ from 'lodash';
+import { sendLogEvents } from '@/services/logEvent';
 
 export default {
-  name: "Overview",
+  name: 'Overview',
 
   components: {
     Skeleton,
@@ -61,27 +51,27 @@ export default {
   },
 
   async created() {
-    this.$store.commit("timetables/setBodyBackgroundColor", "grey-10");
-    await this.$store.dispatch("timetables/fetch");
+    this.$store.commit('timetables/setBodyBackgroundColor', 'grey-10');
+    await this.$store.dispatch('timetables/fetch');
   },
 
   watch: {
     timetables(val) {
       if (val.length <= 2) {
-        this.$store.commit("timetables/setTimetableExpandableIndex", [0, 1]);
+        this.$store.commit('timetables/setTimetableExpandableIndex', [0, 1]);
         return;
       }
-      this.$store.commit("timetables/setTimetableExpandableIndex", null);
+      this.$store.commit('timetables/setTimetableExpandableIndex', null);
     },
   },
 
+  mounted() {
+    sendLogEvents('Open·View', { viewName: 'Overview' });
+  },
+
   computed: {
-    ...mapState("timetables", [
-      "timetables",
-      "loading",
-      "timetableExpandableIndex",
-    ]),
-    ...mapGetters("timetables", ["currentWeekdayLabel"]),
+    ...mapState('timetables', ['timetables', 'loading', 'timetableExpandableIndex']),
+    ...mapGetters('timetables', ['currentWeekdayLabel']),
   },
 
   methods: {
@@ -90,9 +80,9 @@ export default {
     },
 
     openTimetable(timetable) {
-      this.$store.commit("timetables/setSelectedTimetable", timetable);
+      this.$store.commit('timetables/setSelectedTimetable', timetable);
       this.$router.push({
-        name: "timetables.detail",
+        name: 'timetables.detail',
         title: timetable.student,
         params: {
           timetable: timetable,
@@ -103,10 +93,10 @@ export default {
 
     expand(index, value) {
       if (!value) {
-        this.$store.commit("timetables/setTimetableExpandableIndex", null);
+        this.$store.commit('timetables/setTimetableExpandableIndex', null);
         return;
       }
-      this.$store.commit("timetables/setTimetableExpandableIndex", index);
+      this.$store.commit('timetables/setTimetableExpandableIndex', index);
     },
   },
 };
@@ -127,7 +117,7 @@ export default {
   font-size: 16px;
 }
 .no-timetables-image {
-  background-image: url("../assets/shape.svg");
+  background-image: url('../assets/shape.svg');
   width: 100%;
   background-repeat: no-repeat;
   text-align: center;

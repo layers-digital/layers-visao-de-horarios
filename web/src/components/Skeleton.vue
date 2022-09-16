@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="ls-row ls-no-gutters card grey-30-outline p-3 ls-align-items-center"
-  >
+  <div class="ls-row ls-no-gutters card grey-30-outline p-3 ls-align-items-center">
     <div class="circle-placeholder mr-3"></div>
     <div class="ls-col ellipsis mr-2">
       <div class="placeholder mb-2 loading-placeholder"></div>
@@ -12,7 +10,7 @@
 
 <script>
 export default {
-  name: "Skeleton",
+  name: 'Skeleton',
 };
 </script>
 

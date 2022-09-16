@@ -1,19 +1,11 @@
 <template>
   <transition name="fade">
     <div v-if="open" class="toast-container" :class="position">
-      <div
-        class="ls-row ls-no-gutters toast ls-align-items-center"
-        :class="color"
-      >
+      <div class="ls-row ls-no-gutters toast ls-align-items-center" :class="color">
         <div class="ls-col">
           <div v-if="message" class="message">{{ message }}</div>
         </div>
-        <button
-          v-if="options.action"
-          @click="callAction()"
-          class="action-btn cursor-pointer pl-2"
-          :class="actionColor"
-        >
+        <button v-if="options.action" @click="callAction()" class="action-btn cursor-pointer pl-2" :class="actionColor">
           {{ options.action.label }}
         </button>
         <div v-else-if="options.loading">
@@ -27,9 +19,9 @@
   </transition>
 </template>
 <script>
-import Loader from "@/components/Loader";
+import Loader from '@/components/Loader';
 export default {
-  name: "Toast",
+  name: 'Toast',
   props: {
     type: {
       type: String,
@@ -78,31 +70,29 @@ export default {
     color() {
       return (
         {
-          danger: "danger",
-          warning: "warning",
-          success: "success",
-          info: "lead",
-        }[this.options && this.options.color] || "lead"
+          danger: 'danger',
+          warning: 'warning',
+          success: 'success',
+          info: 'lead',
+        }[this.options && this.options.color] || 'lead'
       );
     },
     actionColor() {
-      let color =
-        (this.options && this.options.action && this.options.action.color) ||
-        "lead";
+      let color = (this.options && this.options.action && this.options.action.color) || 'lead';
       return {
-        danger: "danger--text",
-        warning: "warning--text",
-        success: "success--text",
-        info: "lead--text",
-        white: "white--text",
+        danger: 'danger--text',
+        warning: 'warning--text',
+        success: 'success--text',
+        info: 'lead--text',
+        white: 'white--text',
       }[color];
     },
     position() {
       return (
         {
-          top: "top",
-          bottom: "bottom",
-        }[this.options && this.options.position] || "top"
+          top: 'top',
+          bottom: 'bottom',
+        }[this.options && this.options.position] || 'top'
       );
     },
   },
@@ -116,16 +106,14 @@ export default {
       }, 0);
     },
     callAction() {
-      const fn =
-        (this.options && this.options.action && this.options.action.callback) ||
-        null;
-      if (!fn || typeof fn != "function") return;
+      const fn = (this.options && this.options.action && this.options.action.callback) || null;
+      if (!fn || typeof fn != 'function') return;
       return fn();
     },
   },
 };
 function removeElement(el) {
-  if (typeof el.remove !== "undefined") {
+  if (typeof el.remove !== 'undefined') {
     el.remove();
   } else {
     el.parentNode.removeChild(el);
@@ -182,7 +170,7 @@ function removeElement(el) {
   padding: 1px 1px;
   cursor: pointer;
   font-weight: bold;
-  font-family: "Nunito", sans-serif;
+  font-family: 'Nunito', sans-serif;
   outline: none;
 }
 </style>
