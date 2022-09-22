@@ -1,7 +1,5 @@
 <template>
   <div class="ls-container p-3 page">
-    <ProviderStatusUpdate :provider="selectedTimetable && selectedTimetable.provider" class="mt-2" />
-
     <div class="attachments mt-4" v-if="selectedWeekday == 'attachments'">
       <AttachmentCard
         v-for="(attachment, i) in selectedTimetable.attachments"
@@ -38,7 +36,6 @@
 </template>
 
 <script>
-import ProviderStatusUpdate from '@/components/ProviderStatusUpdate';
 import AttachmentCard from '@/components/AttachmentCard';
 import ScheduleRow from '@/components/ScheduleRow';
 import formatTime from '@/helpers/formatTime';
@@ -50,7 +47,6 @@ export default {
   name: 'TimetablesDetail',
 
   components: {
-    ProviderStatusUpdate,
     AttachmentCard,
     ScheduleRow,
   },
