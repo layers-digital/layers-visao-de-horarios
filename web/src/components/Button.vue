@@ -6,7 +6,7 @@
 
 <script type="text/javascript">
 export default {
-  name: "Button",
+  name: 'Button',
 
   props: {
     label: {
@@ -19,7 +19,7 @@ export default {
 
 <style scoped>
 .ls-button {
-  font-family: "Nunito", sans-serif;
+  font-family: 'Nunito', sans-serif;
   width: 100%;
   font-size: 14px;
   border: 1px solid #d7dee3;

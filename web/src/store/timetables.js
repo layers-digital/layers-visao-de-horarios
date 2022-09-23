@@ -1,21 +1,13 @@
-import Axios from "axios";
-import errorHandler from "@/helpers/errorHandler";
-import formatDate from "@/helpers/formatDate";
-import _ from "lodash";
-import getQueryVariable from "@/helpers/getQueryVariable";
+import Axios from 'axios';
+import errorHandler from '@/helpers/errorHandler';
+import formatDate from '@/helpers/formatDate';
+import _ from 'lodash';
+import getQueryVariable from '@/helpers/getQueryVariable';
 
-const ALL_WEEKDAYS = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-];
+const ALL_WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
 const state = {
-  bodyBackgroundColor: "grey-10",
+  bodyBackgroundColor: 'grey-10',
   community: null,
   token: null,
 
@@ -53,19 +45,16 @@ const mutations = {
 
     let weekdays = [...ALL_WEEKDAYS];
     // Remove Sunday from weekdays if doesn't exist any schedules on Sunday
-    if (!_.find(timetable.schedules, { weekday: "sunday" })) {
-      weekdays = weekdays.filter((d) => d != "sunday");
+    if (!_.find(timetable.schedules, { weekday: 'sunday' })) {
+      weekdays = weekdays.filter((d) => d != 'sunday');
     }
     // Remove Saturday from weekdays if doesn't exist any schedules on Saturday
-    if (!_.find(timetable.schedules, { weekday: "saturday" })) {
-      weekdays = weekdays.filter((d) => d != "saturday");
+    if (!_.find(timetable.schedules, { weekday: 'saturday' })) {
+      weekdays = weekdays.filter((d) => d != 'saturday');
     }
 
     // Sort by startWeekday
-    if (
-      timetable.startWeekday &&
-      _.includes(weekdays, timetable.startWeekday)
-    ) {
+    if (timetable.startWeekday && _.includes(weekdays, timetable.startWeekday)) {
       const startWeekdayIndex = weekdays.indexOf(timetable.startWeekday);
       const beforeDays = weekdays.splice(0, startWeekdayIndex);
       weekdays = [...weekdays, ...beforeDays];
@@ -96,20 +85,20 @@ const mutations = {
 
 const actions = {
   async fetch(context) {
-    const community = getQueryVariable("community");
-    const token = getQueryVariable("token");
-    if (community) context.commit("setCommunity", community);
-    if (token) context.commit("setToken", token);
+    const community = getQueryVariable('community');
+    const token = getQueryVariable('token');
+    if (community) context.commit('setCommunity', community);
+    if (token) context.commit('setToken', token);
 
     // Show loading toast
-    context.commit("setLoading", true);
+    context.commit('setLoading', true);
 
     const session = LayersPortal.session;
     const userId = LayersPortal.userId;
     const communityId = LayersPortal.communityId || community;
 
     try {
-      const res = await Axios.get("/related", {
+      const res = await Axios.get('/related', {
         params: {
           userToken: context.state.token,
           community: communityId,
@@ -134,23 +123,23 @@ const actions = {
       if (!timetables.length && res.data.result) {
         timetables = res.data.result;
       }
-      context.commit("setTimetables", timetables);
-      context.commit("setLastFetch", new Date());
-      context.commit("setLoading", false);
+      context.commit('setTimetables', timetables);
+      context.commit('setLastFetch', new Date());
+      context.commit('setLoading', false);
     } catch (err) {
       errorHandler({
         error: err,
         parameters: {
           action: {
             callback: () => {
-              context.dispatch("fetch");
+              context.dispatch('fetch');
             },
-            label: "ATUALIZAR",
+            label: 'ATUALIZAR',
           },
           timeout: 0,
         },
       });
-      context.commit("setLoading", false);
+      context.commit('setLoading', false);
     }
   },
 };
@@ -160,13 +149,13 @@ const getters = {
     const date = new Date();
     let weekday;
     const weekdays = {
-      sunday: "Domingo",
-      monday: "Segunda-feira",
-      tuesday: "Terça-feira",
-      wednesday: "Quarta-feira",
-      thursday: "Quinta-feira",
-      friday: "Sexta-feira",
-      saturday: "Sábado",
+      sunday: 'Domingo',
+      monday: 'Segunda-feira',
+      tuesday: 'Terça-feira',
+      wednesday: 'Quarta-feira',
+      thursday: 'Quinta-feira',
+      friday: 'Sexta-feira',
+      saturday: 'Sábado',
     };
     if (!state.selectedWeekday) {
       weekday = weekdays[Object.keys(weekdays)[date.getDay()]];
@@ -179,7 +168,7 @@ const getters = {
 
   currentSelectedDayLabel: (state) => {
     if (!state.selectedWeekday) {
-      return "";
+      return '';
     }
 
     const dayOfWeek = {

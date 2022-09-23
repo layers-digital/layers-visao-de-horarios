@@ -7,10 +7,7 @@
         :label="schedule.formattedStartTime"
         v-if="schedule.startTime && schedule.formattedStartTime"
       />
-      <div
-        class="end-time lead--text"
-        v-if="schedule.endTime && schedule.formattedEndTime"
-      >
+      <div class="end-time lead--text" v-if="schedule.endTime && schedule.formattedEndTime">
         {{ schedule.formattedEndTime }}
       </div>
     </div>
@@ -26,10 +23,7 @@
       <div class="purple--text bold schedule-title" v-if="schedule.title">
         {{ schedule.title }}
       </div>
-      <div
-        class="grey-70--text mt-2 schedule-location"
-        v-if="schedule.location"
-      >
+      <div class="grey-70--text mt-2 schedule-location" v-if="schedule.location">
         {{ schedule.location }}
       </div>
       <div class="grey-70--text mt-2 schedule-caption" v-if="schedule.caption">
@@ -40,10 +34,10 @@
 </template>
 
 <script type="text/javascript">
-import Chip from "@/components/Chip";
+import Chip from '@/components/Chip';
 
 export default {
-  name: "ScheduleRow",
+  name: 'ScheduleRow',
 
   components: {
     Chip,

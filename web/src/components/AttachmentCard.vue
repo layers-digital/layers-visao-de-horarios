@@ -1,13 +1,9 @@
 <template>
   <div
     class="attachment-card p-2 grey-20 ls-d-flex ls-align-items-center cursor-pointer"
-    @click="
-      openAttachment(attachment.url, attachment.title || 'file-' + Date.now())
-    "
+    @click="openAttachment(attachment.url, attachment.title || 'file-' + Date.now())"
   >
-    <div
-      class="mr-2 attachment-icon link ls-d-flex ls-align-items-center ls-justify-content-center"
-    >
+    <div class="mr-2 attachment-icon link ls-d-flex ls-align-items-center ls-justify-content-center">
       <img src="@/assets/paperclip.svg" width="12" height="12" />
     </div>
     <div class="attachment-title link--text ls-flex-grow-1 f-12">
@@ -16,10 +12,10 @@
   </div>
 </template>
 <script type="text/javascript">
-import downloadFile from "@/helpers/downloadFile";
+import downloadFile from '@/helpers/downloadFile';
 
 export default {
-  name: "AttachmentCard",
+  name: 'AttachmentCard',
 
   props: {
     attachment: {
@@ -30,8 +26,8 @@ export default {
 
   methods: {
     async openAttachment(url, title) {
-      if (this.attachment.type == "link") {
-        return await window.LayersPortal("go", url);
+      if (this.attachment.type == 'link') {
+        return await window.LayersPortal('go', url);
       }
       return downloadFile(url, title);
     },

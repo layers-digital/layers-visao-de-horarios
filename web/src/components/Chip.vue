@@ -7,16 +7,16 @@
 
 <script>
 export default {
-  name: "Chip",
+  name: 'Chip',
 
   props: {
     backgroundColor: {
       type: String,
-      default: "grey-70-light",
+      default: 'grey-70-light',
     },
     color: {
       type: String,
-      default: "lead--text",
+      default: 'lead--text',
     },
     label: {
       type: String,

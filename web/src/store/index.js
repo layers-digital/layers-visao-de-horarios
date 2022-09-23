@@ -1,10 +1,10 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue';
+import Vuex from 'vuex';
 
-import timetables from "./timetables";
-import layers from "./layers";
+import timetables from './timetables';
+import layers from './layers';
 
-import persistedState from "vuex-persistedstate";
+import persistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
 

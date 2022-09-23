@@ -1,10 +1,5 @@
 <template>
   <div class="ls-container p-3 page">
-    <ProviderStatusUpdate
-      :provider="selectedTimetable && selectedTimetable.provider"
-      class="mt-2"
-    />
-
     <div class="attachments mt-4" v-if="selectedWeekday == 'attachments'">
       <AttachmentCard
         v-for="(attachment, i) in selectedTimetable.attachments"
@@ -15,28 +10,15 @@
     </div>
 
     <template v-else>
-      <div
-        class="selected-weekday ls-d-flex ls-align-items-center mt-3"
-        v-if="selectedWeekdayLabel"
-      >
+      <div class="selected-weekday ls-d-flex ls-align-items-center mt-3" v-if="selectedWeekdayLabel">
         <span class="aqua--text bold">{{ selectedWeekdayLabel }}</span>
       </div>
 
-      <div
-        class="schedules-total mt-2 mb-3 bold lead--text"
-        v-if="schedulesTotal"
-      >
+      <div class="schedules-total mt-2 mb-3 bold lead--text" v-if="schedulesTotal">
         {{ schedulesTotal }}
       </div>
 
-      <template
-        v-if="
-          selectedWeekday &&
-          selectedTimetable &&
-          schedulesOfDay &&
-          schedulesOfDay.length
-        "
-      >
+      <template v-if="selectedWeekday && selectedTimetable && schedulesOfDay && schedulesOfDay.length">
         <ScheduleRow
           v-for="(schedule, i) in schedulesOfDay"
           :key="schedule.weekday + i"
@@ -45,45 +27,40 @@
         />
       </template>
 
-      <div
-        class="grey-30-outline no-schedules white ls-d-flex ls-align-items-center p-3 mt-2"
-        v-else
-      >
+      <div class="grey-30-outline no-schedules white ls-d-flex ls-align-items-center p-3 mt-2" v-else>
         <img src="@/assets/vacation.svg" width="92" height="64" />
-        <span class="grey-70--text no-schedules-text ml-3">
-          Não há horários nesse dia :)
-        </span>
+        <span class="grey-70--text no-schedules-text ml-3">Não há horários nesse dia :)</span>
       </div>
     </template>
   </div>
 </template>
 
 <script>
-import ProviderStatusUpdate from "@/components/ProviderStatusUpdate";
-import AttachmentCard from "@/components/AttachmentCard";
-import ScheduleRow from "@/components/ScheduleRow";
-import formatTime from "@/helpers/formatTime";
-import { mapState, mapGetters } from "vuex";
-import _ from "lodash";
+import AttachmentCard from '@/components/AttachmentCard';
+import ScheduleRow from '@/components/ScheduleRow';
+import formatTime from '@/helpers/formatTime';
+import { mapState, mapGetters } from 'vuex';
+import _ from 'lodash';
+import { sendLogEvents } from '@/services/logEvent';
 
 export default {
-  name: "TimetablesDetail",
+  name: 'TimetablesDetail',
 
   components: {
-    ProviderStatusUpdate,
     AttachmentCard,
     ScheduleRow,
   },
 
+  mounted() {
+    sendLogEvents('Open View', { viewName: 'TimetablesDetail' });
+  },
+
   computed: {
-    ...mapState("timetables", ["selectedTimetable", "selectedWeekday"]),
-    ...mapGetters("timetables", [
-      "currentWeekdayLabel",
-      "currentSelectedDayLabel",
-    ]),
+    ...mapState('timetables', ['selectedTimetable', 'selectedWeekday']),
+    ...mapGetters('timetables', ['currentWeekdayLabel', 'currentSelectedDayLabel']),
 
     schedulesOfDay() {
-      const schedules = _.get(this.selectedTimetable, "schedules", null);
+      const schedules = _.get(this.selectedTimetable, 'schedules', null);
       if (!schedules || !schedules.length) return null;
 
       let schedulesOfCurrentDay = schedules
@@ -95,22 +72,19 @@ export default {
         }));
 
       if (!schedulesOfCurrentDay || !schedulesOfCurrentDay.length) return null;
-      schedulesOfCurrentDay = _.sortBy(
-        schedulesOfCurrentDay,
-        "formattedStartTime"
-      );
+      schedulesOfCurrentDay = _.sortBy(schedulesOfCurrentDay, 'formattedStartTime');
 
       return schedulesOfCurrentDay;
     },
 
     selectedWeekdayLabel() {
-      return this.currentWeekdayLabel + ", " + this.currentSelectedDayLabel;
+      return this.currentWeekdayLabel + ', ' + this.currentSelectedDayLabel;
     },
 
     schedulesTotal() {
       if (!this.schedulesOfDay || !this.schedulesOfDay.length) return null;
       const total = this.schedulesOfDay.length;
-      return total == 1 ? total + " horário" : total + " horários";
+      return total == 1 ? total + ' horário' : total + ' horários';
     },
   },
 };

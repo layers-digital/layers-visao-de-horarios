@@ -1,25 +1,20 @@
 <template>
-  <transition
-    name="expand"
-    @enter="enter"
-    @after-enter="afterEnter"
-    @leave="leave"
-  >
+  <transition name="expand" @enter="enter" @after-enter="afterEnter" @leave="leave">
     <slot />
   </transition>
 </template>
 
 <script>
 export default {
-  name: "TransitionExpand",
+  name: 'TransitionExpand',
   methods: {
     enter(element) {
       const width = getComputedStyle(element).width;
 
       element.style.width = width;
-      element.style.position = "absolute";
-      element.style.visibility = "hidden";
-      element.style.height = "auto";
+      element.style.position = 'absolute';
+      element.style.visibility = 'hidden';
+      element.style.height = 'auto';
 
       const height = getComputedStyle(element).height;
 
@@ -38,7 +33,7 @@ export default {
       });
     },
     afterEnter(element) {
-      element.style.height = "auto";
+      element.style.height = 'auto';
     },
     leave(element) {
       const height = getComputedStyle(element).height;

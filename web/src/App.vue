@@ -10,29 +10,29 @@
 </template>
 
 <script>
-import AppBar from "@/components/AppBar";
-import { mapState } from "vuex";
+import AppBar from '@/components/AppBar';
+import { mapState } from 'vuex';
 
 export default {
-  name: "App",
+  name: 'App',
 
   components: {
     AppBar,
   },
 
   data: () => ({
-    transitionName: "slide-left",
+    transitionName: 'slide-left',
   }),
 
   computed: {
-    ...mapState("timetables", ["bodyBackgroundColor"]),
+    ...mapState('timetables', ['bodyBackgroundColor']),
   },
 
   watch: {
     $route(to, from) {
-      const toDepth = to.path.split("/").length;
-      const fromDepth = from.path.split("/").length;
-      this.transitionName = toDepth < fromDepth ? "slide-right" : "slide-left";
+      const toDepth = to.path.split('/').length;
+      const fromDepth = from.path.split('/').length;
+      this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
     },
   },
 };
