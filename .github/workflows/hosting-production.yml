@@ -2,8 +2,8 @@ name: CI/CD - Hosting (Production)
 on:
   push:
     paths:
-      - '!.github/workflows/**'
-      - 'web/**'
+      - "!.github/workflows/**"
+      - "web/**"
     branches:
       - production
 
@@ -29,7 +29,7 @@ jobs:
       - name: Set Node Version
         uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: "16"
       - name: Install Dependencies
         run: yarn install
       - name: Build
