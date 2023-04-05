@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
     "start": "vue-cli-service serve",
+    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build && yarn archive",
     "lint": "eslint src --ext=.ts,.js,.vue",
     "build-report": "vue-cli-service build --report",
