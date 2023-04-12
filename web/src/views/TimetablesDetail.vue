@@ -41,7 +41,6 @@ import ScheduleRow from '@/components/ScheduleRow';
 import formatTime from '@/helpers/formatTime';
 import { mapState, mapGetters } from 'vuex';
 import _ from 'lodash';
-import { sendLogEvents } from '@/services/logEvent';
 
 export default {
   name: 'TimetablesDetail',
@@ -49,10 +48,6 @@ export default {
   components: {
     AttachmentCard,
     ScheduleRow,
-  },
-
-  mounted() {
-    sendLogEvents('Open View', { viewName: 'TimetablesDetail' });
   },
 
   computed: {
