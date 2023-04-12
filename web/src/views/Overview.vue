@@ -40,7 +40,6 @@ import { mapState, mapGetters } from 'vuex';
 import Skeleton from '@/components/Skeleton';
 import OverviewTimetableCard from '@/components/OverviewTimetableCard';
 import _ from 'lodash';
-import { sendLogEvents } from '@/services/logEvent';
 
 export default {
   name: 'Overview',
@@ -63,10 +62,6 @@ export default {
       }
       this.$store.commit('timetables/setTimetableExpandableIndex', null);
     },
-  },
-
-  mounted() {
-    sendLogEvents('Open·View', { viewName: 'Overview' });
   },
 
   computed: {
