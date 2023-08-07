@@ -1,3 +1,5 @@
+⚠️ **Esse repo foi movido para o Gitlab: https://gitlab.com/layers-digital/apps/layers-visao-de-horarios**
+
 # layers-visao-de-horarios
 
 Esse projeto possui a seguinte estrutura:
